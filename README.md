@@ -22,7 +22,7 @@
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/vinoth82003/mydata.git
+    git clone https://github.com/Vinoth82003/mydata.git
     cd mydata
     ```
 2. **Install dependencies:**
