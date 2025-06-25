@@ -1,0 +1,23 @@
+.themeToggle {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: fixed;
+  bottom: 45px;
+  right: 20px;
+  z-index: 10001;
+  color: rgb(var(--clr)); /* Updated to use your primary text color */
+  background: rgba(var(--glass-bg));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(var(--glass-border));
+}
+
+.themeToggle:hover {
+  transform: scale(1.1);
+  background: rgba(var(--glass-bg));
+  border-color: rgb(var(--primary-clr));
+}
