@@ -6,48 +6,72 @@ import Otp from "@/models/Otp";
 import { transporter } from "@/lib/mail";
 import { signToken } from "@/lib/auth";
 import { MFA } from "@/templates/EmailTemplates";
+import { cookies } from "next/headers";
 
 export async function POST(req) {
-  const { email, password, keepSignedIn } = await req.json();
-  if (!email || !password)
-    return Response.json({ error: "Missing credentials" }, { status: 400 });
+  try {
+    const { email, password, keepSignedIn } = await req.json();
 
-  await connectDB();
-  const user = await User.findOne({ email });
-  if (
-    !user ||
-    !user.password ||
-    !(await bcrypt.compare(password, user.password))
-  ) {
-    return Response.json(
-      { error: "Invalid email or password" },
-      { status: 401 }
+    if (!email || !password) {
+      return Response.json({ error: "Missing credentials" }, { status: 400 });
+    }
+
+    await connectDB();
+    const user = await User.findOne({ email });
+
+    if (
+      !user ||
+      !user.password ||
+      !(await bcrypt.compare(password, user.password))
+    ) {
+      return Response.json(
+        { error: "Invalid email or password" },
+        { status: 401 }
+      );
+    }
+
+    // 2FA handling
+    if (user.twoFaEnabled) {
+      const code = crypto.randomInt(100000, 999999).toString();
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+      await Otp.findOneAndUpdate(
+        { email },
+        { code, expiresAt },
+        { upsert: true, new: true }
+      );
+
+      const mail = MFA(user.fname || user.email, code);
+      await transporter.sendMail({
+        to: email,
+        subject: mail.subject,
+        html: mail.html,
+      });
+
+      return Response.json({ requiresOtp: true });
+    }
+
+    // No 2FA → issue tokens
+    const { accessToken, refreshToken } = signToken(
+      { id: user._id, email: user.email },
+      keepSignedIn
     );
+
+    // Await the async cookies() getter
+    if (keepSignedIn && refreshToken) {
+      const cookieStore = await cookies();
+      cookieStore.set("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60,
+      });
+    }
+
+    return Response.json({ accessToken });
+  } catch (error) {
+    console.error("Login Error:", error);
+    return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
-
-  // If 2FA enabled, generate OTP and send email
-  console.log("is 2FA enabled " + user.twoFaEnabled);
-  
-  if (user.twoFaEnabled) {
-    const code = crypto.randomInt(100000, 999999).toString();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
-    await Otp.findOneAndUpdate(
-      { email },
-      { code, expiresAt },
-      { upsert: true, new: true }
-    );
-
-    const mail = MFA(user.fname, code);
-    await transporter.sendMail({
-      to: email,
-      subject: mail.subject,
-      html: mail.html,
-    });
-
-    return Response.json({ requiresOtp: true });
-  }
-
-  // Otherwise, issue JWT immediately
-  const token = signToken({ id: user._id, email }, keepSignedIn);
-  return Response.json({ token });
 }

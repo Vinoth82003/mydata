@@ -1,4 +1,5 @@
 .container {
+  min-width: 280px;
   max-width: 420px;
   margin: 5rem auto;
   padding: 2rem;
@@ -279,14 +280,12 @@
 
 .linkwarpper{
   margin: 10px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
   padding: 0 5px;
+  text-align: center;
 }
 
 .linkwarpper a{
   text-decoration: underline;
   color: var(--accent);
+  margin-left: 4px;
 }

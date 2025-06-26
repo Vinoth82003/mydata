@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react";
 import styles from "./Frame.module.css";
 
-const Frame = ({ deg, type }) => {
+const Frame = ({ deg, type, isPartical }) => {
   const containerRef = useRef();
 
   useEffect(() => {
+    if (!isPartical) return;
     const container = containerRef.current;
     const particleCount = 30;
 
@@ -20,7 +21,7 @@ const Frame = ({ deg, type }) => {
       p.style.width = p.style.height = `${10 + Math.random() * 10}px`;
       container.appendChild(p);
     }
-  }, []);
+  }, [isPartical]);
 
   return (
     <div
