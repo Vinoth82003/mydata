@@ -46,7 +46,7 @@ export default function StepThree() {
         lname: DOMPurify.sanitize(formData.lname.trim()),
         email: DOMPurify.sanitize(formData.email.trim().toLowerCase()),
         password: formData.password, // hashed on backend, but can be trimmed
-        keepSignedIn: !!formData.keepSignedIn,
+        twoFaEnabled: !!formData.twoFaEnabled,
         image: formData.image || null,
       };
 
@@ -114,12 +114,12 @@ export default function StepThree() {
       <label className={styles.checkboxLabel}>
         <input
           type="checkbox"
-          checked={formData.keepSignedIn}
+          checked={formData.twoFaEnabled}
           onChange={(e) =>
-            setFormData({ ...formData, keepSignedIn: e.target.checked })
+            setFormData({ ...formData, twoFaEnabled: e.target.checked })
           }
         />
-        Keep me signed in
+        Do you prefer 2FA (2 Factor Authendication) Sign in method.
       </label>
 
       <div className={styles.actions}>

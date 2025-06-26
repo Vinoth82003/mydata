@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import OTPForm from "./OTPForm";
 import styles from "./SigninForm.module.css";
 
 export default function SigninForm() {
+  const router = useRouter(); 
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,12 +26,17 @@ export default function SigninForm() {
 
       const data = await res.json();
       if (res.ok) {
-        if (data.requireOTP) {
+        if (data.requiresOtp) {
           toast.success("OTP sent to email");
           setStep(2);
         } else {
-          toast.success("Logged in successfully");
-          // Save token / redirect logic
+          if (data.token) {
+            localStorage.setItem("token", data.token);
+            toast.success("Logged in successfully");
+            router.push("/dashboard");
+          } else {
+            toast.error("No token received");
+          }
         }
       } else {
         toast.error(data?.error || "Login failed");
@@ -76,8 +83,16 @@ export default function SigninForm() {
       >
         {loading ? "Verifying..." : "Continue"}
       </button>
+
+      <p className={styles.orText}>or</p>
+      <div className={styles.linkwarpper}>
+        New here?{" "}
+        <a href="/signup" className={styles.link}>
+          Create an account
+        </a>
+      </div>
     </div>
   ) : (
-    <OTPForm email={email} keepSignedIn={keepSignedIn} />
+    <OTPForm email={email} keepSignedIn={keepSignedIn} setStep={setStep} />
   );
 }

@@ -5,9 +5,9 @@ const userSchema = new mongoose.Schema({
   lname: String,
   email: { type: String, unique: true },
   password: String,
-  keepSignedIn: Boolean,
-  image: String, 
-  twoFaEnabled: Boolean,
+  keepSignedIn: { type: Boolean, default: false },
+  image: String,
+  twoFaEnabled: { type: Boolean, default: false },
 });
 
 export default mongoose.models.User || mongoose.model("User", userSchema);

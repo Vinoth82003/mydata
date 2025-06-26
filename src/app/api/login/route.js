@@ -26,7 +26,9 @@ export async function POST(req) {
   }
 
   // If 2FA enabled, generate OTP and send email
-  if (user?.twoFaEnabled) {
+  console.log("is 2FA enabled " + user.twoFaEnabled);
+  
+  if (user.twoFaEnabled) {
     const code = crypto.randomInt(100000, 999999).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
     await Otp.findOneAndUpdate(

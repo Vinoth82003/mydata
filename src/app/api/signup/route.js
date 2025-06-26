@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 
 export async function POST(req) {
   try {
-    const { fname, lname, email, password, keepSignedIn, image } =
+    const { fname, lname, email, password, twoFaEnabled, image } =
       await req.json();
 
     if (!fname || !lname || !email || !password) {
@@ -44,7 +44,7 @@ export async function POST(req) {
       lname,
       email,
       password: hashedPassword,
-      keepSignedIn,
+      twoFaEnabled,
       image: imageUrl,
     });
 

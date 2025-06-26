@@ -2,8 +2,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "./OTPForm.module.css";
+import { useRouter } from "next/navigation";
 
-export default function OTPForm({ email, keepSignedIn }) {
+export default function OTPForm({ email, keepSignedIn, setStep }) {
+  const router = useRouter();
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,9 +21,10 @@ export default function OTPForm({ email, keepSignedIn }) {
       });
 
       const data = await res.json();
-      if (res.ok) {
+      if (data.token) {
+        localStorage.setItem("token", data.token);
         toast.success("Logged in successfully");
-        // redirect or save JWT
+        router.push("/dashboard");
       } else {
         toast.error(data?.error || "Invalid OTP");
       }
@@ -34,7 +37,8 @@ export default function OTPForm({ email, keepSignedIn }) {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.title}>Enter OTP sent to {email}</h3>
+      <p className={styles.title}>Enter OTP sent to</p>
+      <p className={styles.email}>{email}</p>
       <input
         className={styles.input}
         placeholder="6-digit OTP"
@@ -42,13 +46,24 @@ export default function OTPForm({ email, keepSignedIn }) {
         onChange={(e) => setOtp(e.target.value)}
         disabled={loading}
       />
-      <button
-        className={styles.button}
-        onClick={handleVerify}
-        disabled={loading}
-      >
-        {loading ? "Verifying..." : "Verify OTP"}
-      </button>
+      <div className={styles.buttonGroup}>
+        <button
+          className={styles.button}
+          onClick={() => {
+            setStep(1);
+          }}
+          disabled={loading}
+        >
+          Back
+        </button>
+        <button
+          className={styles.button}
+          onClick={handleVerify}
+          disabled={loading}
+        >
+          {loading ? "Verifying..." : "Verify OTP"}
+        </button>
+      </div>
     </div>
   );
 }

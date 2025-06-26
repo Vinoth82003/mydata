@@ -6,9 +6,8 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 20px;
 }
-
-
 
 .icon {
   width: 3.5rem;

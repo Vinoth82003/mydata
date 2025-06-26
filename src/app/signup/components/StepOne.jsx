@@ -114,8 +114,14 @@ export default function StepOne() {
         </button>
       </div>
 
+      <p className={styles.orText}>or</p>
+      <div className={styles.linkwarpper}>
+        Already have an account?
+        <a href="/signin" className={styles.link}>
+          Sign in
+        </a>
+      </div>
       <div className={styles.googleBtnWrapper}>
-        <p className={styles.orText}>or</p>
         <button className={styles.googleBtn} onClick={handleGoogleSignup}>
           <FcGoogle size={20} />
           <span>Sign up with Google</span>

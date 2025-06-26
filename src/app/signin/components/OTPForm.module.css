@@ -1,43 +1,57 @@
 .container {
-    max-width: 400px;
-    margin: auto;
-    padding: 2rem;
-    border-radius: 12px;
-    background: var(--bg-secondary, #fff);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
-    text-align: center;
-  }
-  
-  .title {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-  }
-  
-  .input {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: #fafafa;
-    text-align: center;
-    letter-spacing: 0.1rem;
-  }
-  
-  .button {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    background: var(--accent, #10b981);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-  
-  .button:hover {
-    background: var(--accent-dark, #059669);
-  }
-  
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.247);
+  margin-top: 100px;
+  backdrop-filter: blur(7px);
+}
+
+.title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fafafa;
+  text-align: center;
+  letter-spacing: 0.1rem;
+}
+
+.buttonGroup{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.button:hover {
+  background: #005ac1;
+}
+
+.email {
+  margin: 1rem auto;
+  color: var(--accent);
+  text-align: center;
+}

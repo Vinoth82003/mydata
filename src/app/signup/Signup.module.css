@@ -276,3 +276,17 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.linkwarpper{
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 5px;
+}
+
+.linkwarpper a{
+  text-decoration: underline;
+  color: var(--accent);
+}
