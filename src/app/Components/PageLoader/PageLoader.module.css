@@ -6,7 +6,7 @@
   justify-content: center;
   z-index: 9999;
   background: var(--bg-secondary);
-  opacity: 0.8;
+  opacity: 0.6;
   backdrop-filter: blur(10px);
 }
 
