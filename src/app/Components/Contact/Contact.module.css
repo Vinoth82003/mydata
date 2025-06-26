@@ -1,0 +1,106 @@
+.contactSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 4rem 2rem;
+  /* background: linear-gradient(
+    var(--deg, 135deg),
+    var(--bg-gradient-start),
+    var(--bg-gradient-mid),
+    var(--bg-gradient-end)
+  ); */
+  color: var(--text-primary);
+}
+
+.textBlock {
+  flex: 1;
+  min-width: 280px;
+}
+
+.textBlock h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.textBlock p {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+}
+
+.links li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.links a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.links svg {
+  width: 18px;
+  height: 18px;
+}
+
+.location {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+}
+
+.form {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form input,
+.form textarea {
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  resize: none;
+}
+
+.form button {
+  background: var(--accent);
+  color: var(--btn-hover-text);
+  padding: 0.8rem;
+  border: none;
+  border-radius: var(--btn-border-radius);
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

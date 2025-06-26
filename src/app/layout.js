@@ -4,6 +4,8 @@ import Frame from "./Components/Frame/Frame";
 import Navbar from "./Components/Navbar/Navbar";
 import ThemeWrapper from "./Components/ThemeToggle/ThemeWrapper";
 import ThemeToggle from "./Components/ThemeToggle/ThemeToggle";
+import Footer from "./Components/Footer/Footer";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,8 +30,20 @@ export default function RootLayout({ children }) {
         <ThemeWrapper>
           <ThemeToggle />
           <Frame deg={"to bottom"} />
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: "var(--bg-secondary)",
+                color: "var(--text-primary)",
+                border: "1px solid var(--accent)",
+              },
+            }}
+          />
           <Navbar />
           {children}
+          <Footer />
         </ThemeWrapper>
       </body>
     </html>

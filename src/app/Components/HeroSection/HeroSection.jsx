@@ -10,10 +10,10 @@ export default function HeroSection() {
         details, and also project details.
       </p>
       <div className={styles.buttonGroup}>
-        <a href="/sign-up" className={styles.primaryButton}>
+        <a href="/signup" className={styles.primaryButton}>
           <UserPlus size={16} /> sign up
         </a>
-        <a href="/sign-in" className={styles.secondaryButton}>
+        <a href="/signin" className={styles.secondaryButton}>
           <LogIn size={16} /> sign in
         </a>
       </div>

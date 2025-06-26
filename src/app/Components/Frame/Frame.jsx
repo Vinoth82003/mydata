@@ -8,7 +8,7 @@ const Frame = ({ deg, type }) => {
 
   useEffect(() => {
     const container = containerRef.current;
-    const particleCount = 25;
+    const particleCount = 30;
 
     for (let i = 0; i < particleCount; i++) {
       const p = document.createElement("div");
@@ -17,7 +17,7 @@ const Frame = ({ deg, type }) => {
       p.style.animationDuration = `${10 + Math.random() * 10}s`;
       p.style.animationDelay = `${Math.random() * 10}s`;
       p.style.opacity = Math.random() * 0.4 + 0.2;
-      p.style.width = p.style.height = `${6 + Math.random() * 6}px`;
+      p.style.width = p.style.height = `${10 + Math.random() * 10}px`;
       container.appendChild(p);
     }
   }, []);

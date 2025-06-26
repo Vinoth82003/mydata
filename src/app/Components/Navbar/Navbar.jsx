@@ -14,21 +14,24 @@ export default function Navbar() {
       <nav className={styles.navbar}>
         <div className={styles.logoSection}>
           <div className={styles.logo}>
-            <FolderOpenDot/>
+            <FolderOpenDot />
           </div>
           <span className={styles.brand}>My Data</span>
         </div>
 
         <div className={styles.navLinks}>
-          {["Home", "Features", "About", "Contact"].map((link, idx) => (
-            <a
-              key={idx}
-              href={`#${link.toLowerCase()}`}
-              className={styles.link}
-            >
-              {link}
-            </a>
-          ))}
+          <a href={"/"} className={styles.link}>
+            Home
+          </a>
+          <a href={"/contact"} className={styles.link}>
+            Contact
+          </a>
+          <a href={"/signup"} className={styles.link}>
+            Sign up
+          </a>
+          <a href={"/signin"} className={styles.link}>
+            Sign in
+          </a>
         </div>
 
         <button className={styles.menuToggle} onClick={toggleMenu}>
@@ -42,16 +45,18 @@ export default function Navbar() {
             <button className={styles.closeButton} onClick={closeMenu}>
               <X size={24} />
             </button>
-            {["Home", "Features", "About", "Contact"].map((link, idx) => (
-              <a
-                key={idx}
-                href={`#${link.toLowerCase()}`}
-                onClick={closeMenu}
-                className={styles.mobileLink}
-              >
-                {link}
-              </a>
-            ))}
+            <a href={"/"} className={styles.mobileLink}>
+              Home
+            </a>
+            <a href={"/contact"} className={styles.mobileLink}>
+              Contact
+            </a>
+            <a href={"/signup"} className={styles.mobileLink}>
+              Sign up
+            </a>
+            <a href={"/signin"} className={styles.mobileLink}>
+              Sign in
+            </a>
           </div>
         </div>
       )}

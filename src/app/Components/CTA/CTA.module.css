@@ -1,0 +1,81 @@
+.ctaWrapper {
+  width: 100%;
+  padding: 6rem 1.5rem;
+  position: relative;
+  background: linear-gradient(
+    var(--deg, 135deg),
+    var(--bg-gradient-start),
+    var(--bg-gradient-mid),
+    var(--bg-gradient-end)
+  );
+  background-size: 400% 400%;
+  animation: animateBG 20s ease infinite;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+@keyframes animateBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  z-index: 1;
+}
+
+.ctaContent {
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  color: var(--text-primary);
+}
+
+.heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.subheading {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.ctaButton {
+  padding: 0.8rem 2rem;
+  background: var(--accent);
+  color: var(--btn-hover-text);
+  font-weight: 600;
+  border-radius: var(--btn-border-radius);
+  box-shadow: 0 0 12px var(--btn-glow);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.ctaButton:hover {
+  background: var(--btn-hover);
+  color: var(--btn-hover-text);
+}
+
+.icon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
