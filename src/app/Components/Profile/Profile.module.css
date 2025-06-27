@@ -1,0 +1,98 @@
+/* Profile.module.css */
+.profileCard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+}
+.photoSection {
+  flex: 0 0 120px;
+}
+.photoWrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.photoWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photoWrapper button {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  color: #fff;
+  padding: 4px;
+  cursor: pointer;
+}
+.photoWrapper button:nth-child(2) {
+  top: 8px;
+  right: 8px;
+}
+.photoWrapper button:nth-child(3) {
+  bottom: 8px;
+  right: 8px;
+}
+.initials {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  position: relative;
+}
+.initials span {
+  position: absolute;
+  font-size: 2rem;
+}
+.infoSection {
+  flex: 1;
+  display: grid;
+  gap: 1rem;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+}
+.field label {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+.field input {
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.readonly {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.saveBtn {
+  background: var(--accent);
+  color: var(--btn-bg);
+  box-shadow: 0px 0px 10px var(--accent-glow);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+@media (max-width: 600px) {
+  .profileCard {
+    flex-direction: column;
+    align-items: center;
+  }
+  .infoSection {
+    width: 100%;
+  }
+}

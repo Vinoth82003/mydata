@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import styles from "./OTPForm.module.css";
 import { useRouter } from "next/navigation";
+import DOMPurify from "dompurify";
 
 export default function OTPForm({
   email,
@@ -18,7 +19,6 @@ export default function OTPForm({
   const [resendTimer, setResendTimer] = useState(30);
   const [resending, setResending] = useState(false);
 
-  // Countdown logic
   useEffect(() => {
     if (resendTimer > 0) {
       const interval = setInterval(() => {
@@ -31,12 +31,19 @@ export default function OTPForm({
   const handleVerify = async () => {
     if (!otp) return toast.error("OTP is required");
 
+    const cleanOtp = DOMPurify.sanitize(otp);
+    const cleanEmail = DOMPurify.sanitize(email);
+
     setLoading(true);
     try {
       const res = await fetch("/api/verify-otp-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, keepSignedIn }),
+        body: JSON.stringify({
+          email: cleanEmail,
+          otp: cleanOtp,
+          keepSignedIn,
+        }),
       });
 
       const data = await res.json();
@@ -57,12 +64,14 @@ export default function OTPForm({
   };
 
   const handleResend = async () => {
+    const cleanEmail = DOMPurify.sanitize(email);
+
     setResending(true);
     try {
       const res = await fetch("/api/resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: cleanEmail }),
       });
 
       const data = await res.json();
@@ -111,7 +120,7 @@ export default function OTPForm({
         </button>
       </div>
 
-      {/* <div className={styles.resend}>
+      <div className={styles.resend}>
         <button
           className={styles.resendButton}
           onClick={handleResend}
@@ -123,7 +132,7 @@ export default function OTPForm({
             ? `Resend in ${resendTimer}s`
             : "Resend OTP"}
         </button>
-      </div> */}
+      </div>
     </div>
   );
 }

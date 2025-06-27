@@ -3,10 +3,12 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
+import { signToken } from "@/lib/auth";
+import { cookies } from "next/headers";
 
 export async function POST(req) {
   try {
-    const { fname, lname, email, password, twoFaEnabled, image } =
+    const { fname, lname, email, password, twoFaEnabled, image, keepSignedIn } =
       await req.json();
 
     if (!fname || !lname || !email || !password) {
@@ -25,7 +27,6 @@ export async function POST(req) {
 
     let imageUrl = null;
 
-    // Upload image if provided as base64 or Blob URL
     if (image?.startsWith("data:image/")) {
       const buffer = Buffer.from(image.split(",")[1], "base64");
       const blob = await put(`profile-${uuid()}.png`, buffer, {
@@ -34,7 +35,7 @@ export async function POST(req) {
       });
       imageUrl = blob.url;
     } else if (image?.startsWith("https://")) {
-      imageUrl = image; // Already uploaded by client
+      imageUrl = image;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -50,7 +51,24 @@ export async function POST(req) {
 
     await newUser.save();
 
-    return Response.json({ message: "Signup successful" }, { status: 201 });
+    const { accessToken, refreshToken } = signToken(
+      { id: newUser._id, email: newUser.email },
+      keepSignedIn
+    );
+
+    // If user wants to stay signed in, store refresh token in secure cookie
+    if (keepSignedIn && refreshToken) {
+      const cookieStore = cookies();
+      cookieStore.set("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+      });
+    }
+
+    return Response.json({ accessToken }, { status: 201 });
   } catch (err) {
     console.error("Signup Error:", err);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });

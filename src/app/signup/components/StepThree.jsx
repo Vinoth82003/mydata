@@ -5,9 +5,11 @@ import styles from "../Signup.module.css";
 import toast from "react-hot-toast";
 import { RotateCw, X } from "lucide-react";
 import DOMPurify from "dompurify"; // npm install dompurify
+import { useRouter } from "next/navigation";
 
 export default function StepThree() {
   const { formData, setFormData, prevStep } = useSignup();
+  const router = useRouter();
   const fileRef = useRef();
   const [submitting, setSubmitting] = useState(false);
 
@@ -35,41 +37,50 @@ export default function StepThree() {
     setFormData({ ...formData, image: null });
   };
 
-  const handleSubmit = async () => {
+  const handleSignup = async () => {
     setSubmitting(true);
-    toast.loading("Submitting...", { id: "submit" });
 
     try {
-      // Sanitize all user inputs
-      const safeFormData = {
-        fname: DOMPurify.sanitize(formData.fname.trim()),
-        lname: DOMPurify.sanitize(formData.lname.trim()),
-        email: DOMPurify.sanitize(formData.email.trim().toLowerCase()),
-        password: formData.password, // hashed on backend, but can be trimmed
-        twoFaEnabled: !!formData.twoFaEnabled,
-        image: formData.image || null,
-      };
+      const {
+        fname,
+        lname,
+        email,
+        password,
+        twoFaEnabled,
+        image,
+        keepSignedIn,
+      } = formData;
+
+      // Sanitize image (base64) in case it's injected via XSS attack
+      const sanitizedImage = image ? DOMPurify.sanitize(image) : null;
 
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(safeFormData),
+        body: JSON.stringify({
+          fname: DOMPurify.sanitize(fname),
+          lname: DOMPurify.sanitize(lname),
+          email: DOMPurify.sanitize(email),
+          password, // password should not be altered
+          twoFaEnabled,
+          image: sanitizedImage,
+          keepSignedIn,
+        }),
       });
 
-      toast.dismiss("submit");
+      const data = await res.json();
 
-      if (res.ok) {
-        toast.success("Signup Complete ");
+      if (res.ok && data.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
+        toast.success("Signup successful");
+        router.push("/dashboard");
       } else {
-        const data = await res.json();
-        toast.error(data?.error || "Signup failed");
+        toast.error(data.error || "Signup failed");
       }
     } catch (err) {
-      toast.dismiss("submit");
-      toast.error("Something went wrong ");
       console.error(err);
+      toast.error("Unexpected error");
     } finally {
-      // Re-enable button
       setSubmitting(false);
     }
   };
@@ -124,7 +135,7 @@ export default function StepThree() {
 
       <div className={styles.actions}>
         <button onClick={prevStep}>Back</button>
-        <button onClick={handleSubmit} disabled={submitting}>
+        <button onClick={handleSignup} disabled={submitting}>
           {submitting ? "Submitting..." : "Submit"}
         </button>
       </div>

@@ -4,11 +4,16 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import PageLoader from "../PageLoader/PageLoader";
 import styles from "./Dashboard.module.css";
+import { Menu, LogOut, Home, Settings, User as UserIcon } from "lucide-react";
+import Sidebar from "../Sidebar/Sidebar";
+import Profile from "../Profile/Profile";
 
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeMenu, setActiveMenu] = useState("Home");
 
   useEffect(() => {
     const checkToken = async () => {
@@ -56,6 +61,7 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     try {
+      setLoading(true);
       localStorage.removeItem("accessToken");
       await fetch("/api/auth/logout", {
         method: "POST",
@@ -67,17 +73,67 @@ export default function Dashboard() {
     }
   };
 
+  const handleUserUpdate = async (updatedData) => {
+    try {
+      const res = await fetch("/api/user/update", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setUser((prev) => ({ ...prev, ...updatedData }));
+        return true;
+      } else {
+        toast.error(data.error || "Update failed");
+        return false;
+      }
+    } catch (err) {
+      console.error("Update error:", err);
+      toast.error("Something went wrong");
+      return false;
+    }
+  };
+
+  const getInitialsColor = (name = "") => {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    const hue = hash % 360;
+    return `hsl(${hue}, 60%, 40%)`;
+  };
+
   if (loading) return <PageLoader />;
 
-  return user ? (
-    <div>
-      <h1>Welcome, {user.fname || user.email}</h1>
-      <p>Email: {user.email}</p>
-      <button onClick={handleLogout} className={styles.logoutButton}>
-        Logout
-      </button>
+  const initials =
+    user?.fname?.[0]?.toUpperCase() + (user?.lname?.[0]?.toUpperCase() || "");
+
+  return (
+    <div className={styles.dashboardContainer}>
+      <Sidebar
+        user={user}
+        initials={initials}
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        onLogout={handleLogout}
+        styles={styles}
+      />
+
+      <main className={styles.mainContent}>
+        {activeMenu === "Home" && <h2>Welcome, {user.fname || user.email}</h2>}
+        {activeMenu === "Profile" && (
+          <Profile user={user} updateUser={handleUserUpdate} />
+        )}
+        {activeMenu === "Settings" && <p>Settings coming soon!</p>}
+      </main>
     </div>
-  ) : (
-    <PageLoader />
   );
 }
