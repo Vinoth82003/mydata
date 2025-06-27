@@ -33,7 +33,7 @@ export default function StepOne() {
     try {
       const res = await fetch("/api/send-otp", {
         method: "POST",
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, type: "verification", name: fname }),
         headers: { "Content-Type": "application/json" },
       });
 

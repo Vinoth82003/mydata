@@ -10,8 +10,11 @@ export default function Profile({ user, updateUser }) {
   const [fname, setFname] = useState(user.fname);
   const [lname, setLname] = useState(user.lname);
   const [image, setImage] = useState(user.image);
+  const [twoFaEnabled, setTwoFaEnabled] = useState(user.twoFaEnabled);
+  // const [twoFaEnabled, setTwoFaEnabled] = useState(user.twoFaEnabled);
   const [emailModal, setEmailModal] = useState(false);
   const [passModal, setPassModal] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const fileRef = useRef();
 
   const getInitials = () =>
@@ -24,6 +27,7 @@ export default function Profile({ user, updateUser }) {
   };
 
   const handleSaveName = async () => {
+    setIsSaving(true);
     const cleanF = DOMPurify.sanitize(fname);
     const cleanL = DOMPurify.sanitize(lname);
     const cleanImage = image?.startsWith("data:image/") ? image : null; // Only send if it's a base64 image
@@ -32,10 +36,12 @@ export default function Profile({ user, updateUser }) {
       fname: cleanF,
       lname: cleanL,
       ...(cleanImage && { image: cleanImage }),
+      twoFaEnabled,
     };
 
     await updateUser(payload);
     toast.success("Profile updated");
+    setIsSaving(false);
   };
 
   const handlePhoto = (e) => {
@@ -74,7 +80,9 @@ export default function Profile({ user, updateUser }) {
             style={{ backgroundColor: getColor(user.email) }}
             onClick={() => fileRef.current.click()}
           >
-            <Camera size={24} />
+            <button className={styles.chButton}>
+              <Camera size={20} />
+            </button>
             <span>{getInitials()}</span>
           </div>
         )}
@@ -96,10 +104,36 @@ export default function Profile({ user, updateUser }) {
           <label>Last Name</label>
           <input value={lname} onChange={(e) => setLname(e.target.value)} />
         </div>
-        <button className={styles.saveBtn} onClick={handleSaveName}>
-          Save Changes
+        <button
+          className={styles.saveBtn}
+          onClick={handleSaveName}
+          disabled={isSaving}
+        >
+          {isSaving ? "Saving Changes....." : "Save Changes"}
         </button>
 
+        {/* <div className={styles.field}>
+          <label>Keep me Sign-in</label>
+          <div className={styles.readonly}>
+            <span>{twoFaEnabled ? "Remember me" : "Forget me"}</span>
+            <button onClick={() => setTwoFaEnabled(!twoFaEnabled)}>
+              {twoFaEnabled ? "Forget" : "Remember"}
+            </button>
+          </div>
+        </div> */}
+        <div className={styles.field}>
+          <label>Multi-factor Authendication</label>
+          <div className={styles.readonly}>
+            <span>
+              {twoFaEnabled
+                ? "Want to Disable 2FA Authendication ?"
+                : "Want to Enable 2FA Authendication ?"}
+            </span>
+            <button onClick={() => setTwoFaEnabled(!twoFaEnabled)}>
+              {twoFaEnabled ? "Disable" : "Enable"}
+            </button>
+          </div>
+        </div>
         <div className={styles.field}>
           <label>Email</label>
           <div className={styles.readonly}>

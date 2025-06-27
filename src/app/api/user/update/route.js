@@ -29,11 +29,13 @@ export async function PATCH(req) {
       otpForPassword,
       image, // base64 or URL
       removeImage,
+      twoFaEnabled,
     } = await req.json();
 
     // ✅ Update name fields
     if (fname) user.fname = fname;
     if (lname) user.lname = lname;
+    user.twoFaEnabled = twoFaEnabled;
 
     // ✅ Update email with OTP verification
     if (newEmail) {
@@ -68,7 +70,7 @@ export async function PATCH(req) {
     }
 
     // ✅ Remove existing image
-    if (removeImage) {
+    if (image==undefined||removeImage) {
       user.image = null;
     }
 

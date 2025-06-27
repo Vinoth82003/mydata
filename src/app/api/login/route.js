@@ -5,7 +5,7 @@ import crypto from "crypto";
 import Otp from "@/models/Otp";
 import { transporter } from "@/lib/mail";
 import { signToken } from "@/lib/auth";
-import { MFA } from "@/templates/EmailTemplates";
+import { getMailTemplate } from "@/lib/emailTemplates";
 import { cookies } from "next/headers";
 
 export async function POST(req) {
@@ -41,7 +41,7 @@ export async function POST(req) {
         { upsert: true, new: true }
       );
 
-      const mail = MFA(user.fname || user.email, code);
+      const mail = getMailTemplate("mfa", code, user.fname || user.email);
       await transporter.sendMail({
         to: email,
         subject: mail.subject,
