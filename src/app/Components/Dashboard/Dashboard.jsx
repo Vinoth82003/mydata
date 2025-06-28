@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import PageLoader from "../PageLoader/PageLoader";
 import styles from "./Dashboard.module.css";
-import { Menu, LogOut, Home, Settings, User as UserIcon } from "lucide-react";
 import Sidebar from "../Sidebar/Sidebar";
 import Profile from "../Profile/Profile";
 
@@ -30,7 +29,10 @@ export default function Dashboard() {
             credentials: "include",
           });
 
-          if (!res.ok) throw new Error("Refresh failed");
+          if (!res.ok) {
+            redirectToLogin();
+            throw new Error("Refresh failed");
+          }
           const data = await res.json();
           token = data.accessToken;
           localStorage.setItem("accessToken", token);
@@ -86,8 +88,18 @@ export default function Dashboard() {
 
       const data = await res.json();
       if (res.ok) {
-        setUser((prev) => ({ ...prev, ...updatedData }));
+        const userRes = await fetch("/api/user/me", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+
+        const userData = await userRes.json();
+        if (userRes.ok) {
+          setUser(userData.user); // 🔁 Update user state
+        }
         return true;
+
       } else {
         toast.error(data.error || "Update failed");
         return false;

@@ -58,6 +58,47 @@ export default function Profile({ user, updateUser }) {
     fileRef.current.value = null;
   };
 
+  const onSubmit = async (value, otp, title) => {
+    try {
+      const res = await fetch("/api/user/changeViaOtp", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: JSON.stringify({
+          type: title === "New Email" ? "changeEmail" : "changePassword",
+          [title === "New Email" ? "newEmail" : "newPassword"]: value,
+          otp,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Refresh user data from backend
+        const userRes = await fetch("/api/user/me", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+
+        const userData = await userRes.json();
+        if (userRes.ok) {
+          updateUser(userData.user); // 🔁 Update user state
+        }
+        return true;
+      } else {
+        toast.error(data.error || "Verification failed");
+        return false;
+      }
+    } catch (err) {
+      console.error("OTP submit error:", err);
+      toast.error("Something went wrong");
+      return false;
+    }
+  };
+
   return (
     <div className={`${styles.profileCard}`}>
       <div className={styles.photoSection}>
@@ -104,6 +145,19 @@ export default function Profile({ user, updateUser }) {
           <label>Last Name</label>
           <input value={lname} onChange={(e) => setLname(e.target.value)} />
         </div>
+        <div className={styles.field}>
+          <label>Multi-factor Authendication</label>
+          <div className={styles.readonly}>
+            <span>
+              {twoFaEnabled
+                ? "Want to Disable 2FA Authendication ?"
+                : "Want to Enable 2FA Authendication ?"}
+            </span>
+            <button onClick={() => setTwoFaEnabled(!twoFaEnabled)}>
+              {twoFaEnabled ? "Disable" : "Enable"}
+            </button>
+          </div>
+        </div>
         <button
           className={styles.saveBtn}
           onClick={handleSaveName}
@@ -121,19 +175,6 @@ export default function Profile({ user, updateUser }) {
             </button>
           </div>
         </div> */}
-        <div className={styles.field}>
-          <label>Multi-factor Authendication</label>
-          <div className={styles.readonly}>
-            <span>
-              {twoFaEnabled
-                ? "Want to Disable 2FA Authendication ?"
-                : "Want to Enable 2FA Authendication ?"}
-            </span>
-            <button onClick={() => setTwoFaEnabled(!twoFaEnabled)}>
-              {twoFaEnabled ? "Disable" : "Enable"}
-            </button>
-          </div>
-        </div>
         <div className={styles.field}>
           <label>Email</label>
           <div className={styles.readonly}>
@@ -153,21 +194,24 @@ export default function Profile({ user, updateUser }) {
 
       {emailModal && (
         <OTPModal
-          title="Change Email"
+          name={user.fname}
+          title="New Email"
+          otpType="changeEmail"
+          type="email"
           onClose={() => setEmailModal(false)}
-          onSubmit={async (newVal, otp) =>
-            await updateUser({ email: newVal, otp })
-          }
+          onSubmit={onSubmit}
         />
       )}
+
       {passModal && (
         <OTPModal
+          name={user.fname}
           title="Change Password"
+          otpType="changePassword"
           type="password"
+          toEmail={user.email}
           onClose={() => setPassModal(false)}
-          onSubmit={async (newVal, otp) =>
-            await updateUser({ password: newVal, otp })
-          }
+          onSubmit={onSubmit}
         />
       )}
     </div>

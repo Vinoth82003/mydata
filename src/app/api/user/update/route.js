@@ -1,14 +1,11 @@
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 import { verifyToken } from "@/lib/auth";
-import { cookies } from "next/headers";
-import bcrypt from "bcryptjs";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
 
 export async function PATCH(req) {
   try {
-    const cookieStore = cookies();
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token)
       return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -23,10 +20,6 @@ export async function PATCH(req) {
     const {
       fname,
       lname,
-      newEmail,
-      otpForEmail,
-      newPassword,
-      otpForPassword,
       image, // base64 or URL
       removeImage,
       twoFaEnabled,
@@ -36,38 +29,6 @@ export async function PATCH(req) {
     if (fname) user.fname = fname;
     if (lname) user.lname = lname;
     user.twoFaEnabled = twoFaEnabled;
-
-    // ✅ Update email with OTP verification
-    if (newEmail) {
-      const storedOtp = cookieStore.get("otp_email_verify")?.value;
-      if (!storedOtp || storedOtp !== otpForEmail) {
-        return Response.json(
-          { error: "Invalid OTP for email" },
-          { status: 403 }
-        );
-      }
-      user.email = newEmail;
-      cookieStore.set("otp_email_verify", "", {
-        path: "/",
-        expires: new Date(0),
-      });
-    }
-
-    // ✅ Update password with OTP
-    if (newPassword) {
-      const storedOtp = cookieStore.get("otp_password_verify")?.value;
-      if (!storedOtp || storedOtp !== otpForPassword) {
-        return Response.json(
-          { error: "Invalid OTP for password" },
-          { status: 403 }
-        );
-      }
-      user.password = await bcrypt.hash(newPassword, 10);
-      cookieStore.set("otp_password_verify", "", {
-        path: "/",
-        expires: new Date(0),
-      });
-    }
 
     // ✅ Remove existing image
     if (image==undefined||removeImage) {

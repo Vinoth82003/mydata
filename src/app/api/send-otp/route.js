@@ -8,6 +8,8 @@ export async function POST(req) {
     await connectDB();
     const { email, type, name } = await req.json();
 
+    console.log("Incomminf: ", email, type, name);
+
     if (!email || !type)
       return Response.json(
         { error: "Email and type required" },
