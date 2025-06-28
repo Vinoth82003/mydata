@@ -27,16 +27,27 @@ export default function Profile({ user, updateUser }) {
   };
 
   const handleSaveName = async () => {
-    setIsSaving(true);
     const cleanF = DOMPurify.sanitize(fname);
     const cleanL = DOMPurify.sanitize(lname);
-    const cleanImage = image?.startsWith("data:image/") ? image : null; // Only send if it's a base64 image
+
+    const hasChanges =
+      cleanF !== user.fname ||
+      cleanL !== user.lname ||
+      image !== user.image ||
+      twoFaEnabled !== user.twoFaEnabled;
+
+    if (!hasChanges) {
+      toast("No changes to update");
+      return;
+    }
+
+    setIsSaving(true);
 
     const payload = {
-      fname: cleanF,
-      lname: cleanL,
-      ...(cleanImage && { image: cleanImage }),
-      twoFaEnabled,
+      ...(cleanF !== user.fname && { fname: cleanF }),
+      ...(cleanL !== user.lname && { lname: cleanL }),
+      ...(image && image !== user.image && { image: image }),
+      ...(twoFaEnabled !== user.twoFaEnabled && { twoFaEnabled }),
     };
 
     await updateUser(payload);
