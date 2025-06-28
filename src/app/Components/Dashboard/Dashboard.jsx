@@ -6,6 +6,7 @@ import PageLoader from "../PageLoader/PageLoader";
 import styles from "./Dashboard.module.css";
 import Sidebar from "../Sidebar/Sidebar";
 import Profile from "../Profile/Profile";
+import Home from "../Home/Home";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -99,7 +100,6 @@ export default function Dashboard() {
           setUser(userData.user);
         }
         return true;
-
       } else {
         toast.error(data.error || "Update failed");
         return false;
@@ -130,13 +130,24 @@ export default function Dashboard() {
       />
 
       <main className={styles.mainContent}>
-        {activeMenu === "Home" && <h2>Welcome, {user.fname || user.email}</h2>}
+        {activeMenu === "Home" && (
+          <>
+            <h2 style={{ marginBottom: "10px" }}>
+              Welcome, {user.fname || user.email}
+            </h2>
+            <Home />
+          </>
+        )}
         {activeMenu === "Profile" && (
           <>
             <h2>Profile, {user.fname || user.email}</h2>
             <Profile user={user} updateUser={handleUserUpdate} />
           </>
         )}
+        {activeMenu === "Data" && <h2>Your Data,</h2>}
+        {activeMenu === "Calendar" && <h2>Your Calendar,</h2>}
+        {activeMenu === "Notes" && <h2>Your Notes,</h2>}
+        {activeMenu === "Todo" && <h2>Your Todo,</h2>}
         {activeMenu === "Settings" && <p>Settings coming soon!</p>}
       </main>
     </div>
