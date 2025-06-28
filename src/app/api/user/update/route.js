@@ -20,10 +20,13 @@ export async function PATCH(req) {
     const {
       fname,
       lname,
-      image, // base64 or URL
+      image,
       removeImage,
       twoFaEnabled,
     } = await req.json();
+
+    console.log("Incomming: ", fname, lname, image, removeImage, twoFaEnabled);
+    
 
     // ✅ Update name fields
     if (fname) user.fname = fname;

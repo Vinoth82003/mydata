@@ -66,7 +66,11 @@
 }
 .field label {
   font-size: 0.9rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
 }
 .field input {
   padding: 0.5rem;
@@ -79,7 +83,7 @@
   justify-content: space-between;
 }
 .saveBtn {
-  background: #004cff;
+  background: #039601;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -117,19 +121,33 @@
   color: #fff;
   cursor: pointer;
   transition: all 0.2s ease-in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .readonly button:hover {
-  scale: 1.1;
-  box-shadow: 0px 0px 10px #004cffbb;
+  background: #2353c1bb;
 }
 
 @media (max-width: 726px) {
   .profileCard {
     flex-direction: column;
     align-items: center;
+    padding: 2rem 1rem;
   }
   .infoSection {
+    width: 100%;
+  }
+
+  .readonly {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+
+  .readonly button {
     width: 100%;
   }
 }

@@ -2,7 +2,16 @@
 import { useState, useRef } from "react";
 import DOMPurify from "dompurify";
 import toast from "react-hot-toast";
-import { Camera, X } from "lucide-react";
+import {
+  Camera,
+  X,
+  ShieldCheck,
+  ShieldOff,
+  Mail,
+  Lock,
+  Pencil,
+  User2Icon,
+} from "lucide-react";
 import styles from "./Profile.module.css";
 import OTPModal from "../OTPModal/OTPModal";
 
@@ -46,7 +55,7 @@ export default function Profile({ user, updateUser }) {
     const payload = {
       ...(cleanF !== user.fname && { fname: cleanF }),
       ...(cleanL !== user.lname && { lname: cleanL }),
-      ...(image && image !== user.image && { image: image }),
+      ...({ image: image }),
       ...(twoFaEnabled !== user.twoFaEnabled && { twoFaEnabled }),
     };
 
@@ -149,23 +158,75 @@ export default function Profile({ user, updateUser }) {
 
       <div className={styles.infoSection}>
         <div className={styles.field}>
-          <label>First Name</label>
+          <label>
+            <User2Icon size={16} style={{ marginRight: 4 }} />
+            First Name
+          </label>
           <input value={fname} onChange={(e) => setFname(e.target.value)} />
         </div>
         <div className={styles.field}>
-          <label>Last Name</label>
+          <label>
+            <User2Icon size={16} style={{ marginRight: 4 }} />
+            Last Name
+          </label>
           <input value={lname} onChange={(e) => setLname(e.target.value)} />
         </div>
         <div className={styles.field}>
-          <label>Multi-factor Authendication</label>
-          <div className={styles.readonly}>
+          <label htmlFor="twofa">
+            <ShieldCheck size={16} style={{ marginRight: 4 }} />
+            Two-Factor Authentication
+          </label>
+          <div className={styles.readonly} id="twofa">
             <span>
               {twoFaEnabled
-                ? "Want to Disable 2FA Authendication ?"
-                : "Want to Enable 2FA Authendication ?"}
+                ? "2FA is currently enabled for extra security."
+                : "2FA is currently disabled. Enable it for more protection."}
             </span>
             <button onClick={() => setTwoFaEnabled(!twoFaEnabled)}>
-              {twoFaEnabled ? "Disable" : "Enable"}
+              {twoFaEnabled ? (
+                <>
+                  <ShieldOff size={16} style={{ marginRight: 4 }} />
+                  Disable 2FA
+                </>
+              ) : (
+                <>
+                  <ShieldCheck size={16} style={{ marginRight: 4 }} />
+                  Enable 2FA
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+        <div className={styles.field}>
+          <label htmlFor="email">
+            <Mail size={16} style={{ marginRight: 4 }} />
+            Email Address
+          </label>
+          <div className={styles.readonly} id="email">
+            <span>{user.email}</span>
+            <button
+              onClick={() => setEmailModal(true)}
+              aria-label="Change Email"
+              title="Change Email"
+            >
+              Change
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="password">
+            <Lock size={16} style={{ marginRight: 4 }} />
+            Password
+          </label>
+          <div className={styles.readonly} id="password">
+            <span>••••••••</span>
+            <button
+              onClick={() => setPassModal(true)}
+              aria-label="Change Password"
+              title="Change Password"
+            >
+              Change
             </button>
           </div>
         </div>
@@ -174,33 +235,8 @@ export default function Profile({ user, updateUser }) {
           onClick={handleSaveName}
           disabled={isSaving}
         >
-          {isSaving ? "Saving Changes....." : "Save Changes"}
+          {isSaving ? "Saving Changes..." : "Save Changes"}
         </button>
-
-        {/* <div className={styles.field}>
-          <label>Keep me Sign-in</label>
-          <div className={styles.readonly}>
-            <span>{twoFaEnabled ? "Remember me" : "Forget me"}</span>
-            <button onClick={() => setTwoFaEnabled(!twoFaEnabled)}>
-              {twoFaEnabled ? "Forget" : "Remember"}
-            </button>
-          </div>
-        </div> */}
-        <div className={styles.field}>
-          <label>Email</label>
-          <div className={styles.readonly}>
-            <span>{user.email}</span>
-            <button onClick={() => setEmailModal(true)}>Change</button>
-          </div>
-        </div>
-
-        <div className={styles.field}>
-          <label>Password</label>
-          <div className={styles.readonly}>
-            <span>••••••••</span>
-            <button onClick={() => setPassModal(true)}>Change</button>
-          </div>
-        </div>
       </div>
 
       {emailModal && (

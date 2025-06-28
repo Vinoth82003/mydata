@@ -79,7 +79,6 @@
 .menuItem:hover {
   background: var(--accent-light);
   color: var(--btn-bg);
-
 }
 
 .menuItem svg {
@@ -106,7 +105,7 @@
   color: var(--btn-bg);
 }
 
-.tooltip::before{
+.tooltip::before {
   content: "";
   position: absolute;
   width: 0;
@@ -160,10 +159,14 @@
     display: none;
   }
 
+  .sidebar.closed .menuItem:hover .tooltip {
+    display: none;
+  }
+
   .mainContent {
     padding: 1rem;
-    width: calc(100vw - 75px);
+    width: calc(100vw - 80px);
     position: relative;
-    left: 75px;
+    left: 70px;
   }
 }

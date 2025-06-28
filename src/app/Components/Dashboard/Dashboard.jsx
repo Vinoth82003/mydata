@@ -7,6 +7,8 @@ import styles from "./Dashboard.module.css";
 import Sidebar from "../Sidebar/Sidebar";
 import Profile from "../Profile/Profile";
 import Home from "../Home/Home";
+import toast from "react-hot-toast";
+import PasswordManager from "../PasswordManager/PasswordManager";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -106,7 +108,7 @@ export default function Dashboard() {
       }
     } catch (err) {
       console.error("Update error:", err);
-      toast.error("Something went wrong");
+      toast.error("Something went wrong, Login and try again");
       return false;
     }
   };
@@ -144,7 +146,12 @@ export default function Dashboard() {
             <Profile user={user} updateUser={handleUserUpdate} />
           </>
         )}
-        {activeMenu === "Data" && <h2>Your Data,</h2>}
+        {activeMenu === "Data" && (
+          <>
+            <h2>Your Data,</h2>
+            <PasswordManager/>
+          </>
+        )}
         {activeMenu === "Calendar" && <h2>Your Calendar,</h2>}
         {activeMenu === "Notes" && <h2>Your Notes,</h2>}
         {activeMenu === "Todo" && <h2>Your Todo,</h2>}
