@@ -2,6 +2,7 @@ import { transporter } from "@/lib/mail";
 import Otp from "@/models/Otp";
 import { connectDB } from "@/lib/db";
 import { getMailTemplate } from "@/lib/emailTemplates";
+import User from "@/models/User";
 
 export async function POST(req) {
   try {
@@ -15,6 +16,13 @@ export async function POST(req) {
         { error: "Email and type required" },
         { status: 400 }
       );
+
+    if (type == "verification") {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return Response.json({ error: "User already exists" }, { status: 409 });
+      }
+    }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);

@@ -141,30 +141,19 @@
   }
 
   .sidebar {
-    flex-direction: row;
-    overflow-x: auto;
-    height: 60px;
-    width: 100%;
-    padding: 0.5rem;
-    align-items: center;
+    position: absolute;
+    z-index: 1000;
+    height: 100dvh;
   }
 
   .sidebar.closed {
-    width: 100%;
-  }
-
-  .logoSection {
-    display: none;
+    width: 70px;
   }
 
   .menu {
-    flex-direction: row;
+    /* flex-direction: row; */
     gap: 0.75rem;
     flex: 1;
-  }
-
-  .menuItem span {
-    display: none;
   }
 
   .tooltip {
@@ -173,5 +162,8 @@
 
   .mainContent {
     padding: 1rem;
+    width: calc(100vw - 75px);
+    position: relative;
+    left: 75px;
   }
 }

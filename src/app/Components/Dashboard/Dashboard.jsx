@@ -96,7 +96,7 @@ export default function Dashboard() {
 
         const userData = await userRes.json();
         if (userRes.ok) {
-          setUser(userData.user); // 🔁 Update user state
+          setUser(userData.user);
         }
         return true;
 
@@ -132,7 +132,10 @@ export default function Dashboard() {
       <main className={styles.mainContent}>
         {activeMenu === "Home" && <h2>Welcome, {user.fname || user.email}</h2>}
         {activeMenu === "Profile" && (
-          <Profile user={user} updateUser={handleUserUpdate} />
+          <>
+            <h2>Profile, {user.fname || user.email}</h2>
+            <Profile user={user} updateUser={handleUserUpdate} />
+          </>
         )}
         {activeMenu === "Settings" && <p>Settings coming soon!</p>}
       </main>
