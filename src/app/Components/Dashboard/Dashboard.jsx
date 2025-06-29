@@ -17,6 +17,12 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("Home");
 
+  
+  const redirectToLogin = () => {
+    localStorage.removeItem("accessToken");
+    router.push("/signin");
+  };
+
   useEffect(() => {
     const checkToken = async () => {
       let token = localStorage.getItem("accessToken");
@@ -54,11 +60,6 @@ export default function Dashboard() {
       } finally {
         setLoading(false);
       }
-    };
-
-    const redirectToLogin = () => {
-      localStorage.removeItem("accessToken");
-      router.push("/signin");
     };
 
     checkToken();
@@ -146,10 +147,10 @@ export default function Dashboard() {
             <Profile user={user} updateUser={handleUserUpdate} />
           </>
         )}
-        {activeMenu === "Data" && (
+        {activeMenu === "Password Manager" && (
           <>
             <h2>Your Data,</h2>
-            <PasswordManager/>
+            <PasswordManager redirectToLogin={redirectToLogin}/>
           </>
         )}
         {activeMenu === "Calendar" && <h2>Your Calendar,</h2>}

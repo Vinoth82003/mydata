@@ -5,10 +5,10 @@ import {
   Home,
   User as UserIcon,
   Settings,
-  Database,
   CalendarDays,
   NotebookText,
   ListTodo,
+  Shield,
 } from "lucide-react";
 
 export default function Sidebar({
@@ -33,7 +33,7 @@ export default function Sidebar({
   const menuItems = [
     { label: "Home", icon: <Home /> },
     { label: "Profile", icon: <UserIcon /> },
-    { label: "Data", icon: <Database /> },
+    { label: "Password Manager", icon: <Shield /> },
     { label: "Calendar", icon: <CalendarDays /> },
     { label: "Notes", icon: <NotebookText /> },
     { label: "Todo", icon: <ListTodo /> },
