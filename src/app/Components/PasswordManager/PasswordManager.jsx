@@ -36,6 +36,7 @@ export default function PasswordManager({ redirectToLogin }) {
   const [loading, setLoading] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   const [originalEditEntry, setOriginalEditEntry] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const token =
     typeof window !== "undefined" && localStorage.getItem("accessToken");
@@ -87,7 +88,16 @@ export default function PasswordManager({ redirectToLogin }) {
         fetchEntries();
         toast.success("Password saved");
       } else {
-        toast.error(data.error);
+        if (data.error == "jwt expired") {
+          redirectToLogin();
+          Swal.fire(
+            "Error",
+            "jwt expired, Login again to access your profile",
+            "error"
+          );
+        } else {
+          Swal.fire("Error", data.error, "error");
+        }
       }
     } catch (err) {
       toast.error("Something went wrong");
@@ -183,7 +193,16 @@ export default function PasswordManager({ redirectToLogin }) {
         setOriginalEditEntry(null);
         fetchEntries();
       } else {
-        toast.error(data.error || "Update failed");
+        if (data.error == "jwt expired") {
+          redirectToLogin();
+          Swal.fire(
+            "Error",
+            "jwt expired, Login again to access your profile",
+            "error"
+          );
+        } else {
+          Swal.fire("Error", data.error, "error");
+        }
       }
     } catch (err) {
       toast.error("Something went wrong");
@@ -211,11 +230,34 @@ export default function PasswordManager({ redirectToLogin }) {
         toast.success(`Marked as ${!currentFav ? "favorite" : "not favorite"}`);
         fetchEntries();
       } else {
-        toast.error(data.error || "Could not update favorite status");
+        if (data.error == "jwt expired") {
+          redirectToLogin();
+          Swal.fire(
+            "Error",
+            "jwt expired, Login again to access your profile",
+            "error"
+          );
+        } else {
+          Swal.fire("Error", data.error, "error");
+        }
       }
     } catch (err) {
       toast.error("Something went wrong");
     }
+  };
+
+  const highlightMatch = (text, term) => {
+    if (!term) return text;
+    const regex = new RegExp(`(${term})`, "gi");
+    return text.split(regex).map((part, i) =>
+      part.toLowerCase() === term.toLowerCase() ? (
+        <mark key={i} style={{ backgroundColor: "#facc15", color: "#000" }}>
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
   };
 
   useEffect(() => {
@@ -252,14 +294,30 @@ export default function PasswordManager({ redirectToLogin }) {
           {loading ? "Saving..." : "Add Entry"}
         </button>
       </div>
+      <div className={styles.searchBar}>
+        <input
+          type="text"
+          placeholder="Search by title, username, or website..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       <div className={styles.entries}>
         {entries
+          .filter((entry) => {
+            const term = searchTerm.toLowerCase();
+            return (
+              entry.title.toLowerCase().includes(term) ||
+              entry.username.toLowerCase().includes(term) ||
+              (entry.website && entry.website.toLowerCase().includes(term))
+            );
+          })
           .sort((a, b) => b.isFavorite - a.isFavorite)
           .map((entry) =>
             editingId === entry._id ? (
               <>
-                <div className={styles.form}>
+                <div className={styles.form} key={editingId + "-KEY"}>
                   <input
                     value={editForm.title}
                     onChange={(e) =>
@@ -307,12 +365,13 @@ export default function PasswordManager({ redirectToLogin }) {
               <div key={entry._id} className={styles.entryCard}>
                 <h4 className={styles.title}>
                   <Lock className={styles.icon} size={18} />
-                  {entry.title}
+                  {highlightMatch(entry.title, searchTerm)}
                 </h4>
 
                 <p className={styles.row}>
                   <User2Icon size={16} className={styles.icon} />
-                  <span>{entry.username}</span>
+                  <span>{highlightMatch(entry.username, searchTerm)}</span>
+
                   <button
                     className={styles.copyBtn}
                     onClick={() => {
@@ -324,7 +383,7 @@ export default function PasswordManager({ redirectToLogin }) {
                   </button>
                 </p>
 
-                <p className={styles.row}>
+                <div className={styles.row}>
                   <Lock size={16} className={styles.icon} />
                   <span>
                     {showPassword[entry._id] ? entry.password : "••••••••"}
@@ -355,7 +414,7 @@ export default function PasswordManager({ redirectToLogin }) {
                       <Copy size={16} />
                     </button>
                   </div>
-                </p>
+                </div>
 
                 {entry.website && (
                   <a
@@ -373,9 +432,9 @@ export default function PasswordManager({ redirectToLogin }) {
                 )}
 
                 <div className={styles.actions}>
-                  <p className={styles.updatedAt}>
+                  <span className={styles.updatedAt}>
                     updated {format(entry.updatedAt)}
-                  </p>
+                  </span>
 
                   <button
                     onClick={() => toggleFavorite(entry._id, entry.isFavorite)}

@@ -12,6 +12,8 @@ export async function POST(req) {
   try {
     const { email, password, keepSignedIn } = await req.json();
 
+    console.log("Incomming: ", email, password, keepSignedIn);
+
     if (!email || !password) {
       return Response.json({ error: "Missing credentials" }, { status: 400 });
     }
@@ -34,6 +36,10 @@ export async function POST(req) {
     if (user.twoFaEnabled) {
       const code = crypto.randomInt(100000, 999999).toString();
       const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+      console.log("Generated OTP:", code);
+      console.log("Current Time:", new Date().toISOString());
+      console.log("OTP Expires At:", expiresAt.toISOString());
 
       await Otp.findOneAndUpdate(
         { email },

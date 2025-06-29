@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 export function signToken(payload, keepSignedIn = false) {
   const accessToken = jwt.sign(payload, process.env.ACCESS_SECRET, {
-    expiresIn: "15m",
+    expiresIn: keepSignedIn ? "7d" : "15m", 
   });
 
   const refreshToken = keepSignedIn
