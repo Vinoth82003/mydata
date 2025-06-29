@@ -427,7 +427,7 @@ export default function PasswordManager({ redirectToLogin }) {
                     rel="noopener noreferrer"
                     className={styles.website}
                   >
-                    Visit Site ↗
+                    <span>{highlightMatch(entry.website, searchTerm)}</span>
                   </a>
                 )}
 

@@ -9,6 +9,7 @@ import Profile from "../Profile/Profile";
 import Home from "../Home/Home";
 import toast from "react-hot-toast";
 import PasswordManager from "../PasswordManager/PasswordManager";
+import ProjectManager from "../ProjectManager/ProjectManager";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -17,7 +18,6 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeMenu, setActiveMenu] = useState("Home");
 
-  
   const redirectToLogin = () => {
     localStorage.removeItem("accessToken");
     router.push("/signin");
@@ -147,10 +147,16 @@ export default function Dashboard() {
             <Profile user={user} updateUser={handleUserUpdate} />
           </>
         )}
+        {activeMenu === "Project Data" && (
+          <>
+            <h2>Your Project Data,</h2>
+            <ProjectManager redirectToLogin={redirectToLogin} />
+          </>
+        )}
         {activeMenu === "Password Manager" && (
           <>
             <h2>Your Data,</h2>
-            <PasswordManager redirectToLogin={redirectToLogin}/>
+            <PasswordManager redirectToLogin={redirectToLogin} />
           </>
         )}
         {activeMenu === "Calendar" && <h2>Your Calendar,</h2>}

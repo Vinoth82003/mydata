@@ -9,6 +9,7 @@ import {
   NotebookText,
   ListTodo,
   Shield,
+  DatabaseBackup,
 } from "lucide-react";
 
 export default function Sidebar({
@@ -34,6 +35,7 @@ export default function Sidebar({
     { label: "Home", icon: <Home /> },
     { label: "Profile", icon: <UserIcon /> },
     { label: "Password Manager", icon: <Shield /> },
+    { label: "Project Data", icon: <DatabaseBackup /> },
     { label: "Calendar", icon: <CalendarDays /> },
     { label: "Notes", icon: <NotebookText /> },
     { label: "Todo", icon: <ListTodo /> },

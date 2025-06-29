@@ -1,0 +1,150 @@
+
+
+.form h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.form input,
+.form textarea {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  border-radius: 6px;
+  color: var(--text-primary);
+  resize: none;
+  width: 100%;
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.form textarea {
+  min-height: 80px;
+}
+
+.chipInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  gap: 0.3rem;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.chip svg {
+  cursor: pointer;
+}
+
+.envSection {
+  margin-top: 1rem;
+}
+
+.envHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.envTools {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.envTools button,
+.uploadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  border: 1px solid var(--input-border);
+  color: var(--clr);
+}
+
+.uploadBtn input {
+  display: none;
+}
+
+.envList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.envRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.envRow input {
+  flex: 1;
+}
+
+.form button.removeBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.form button.pasteEnv {
+  margin-top: 0.5rem;
+  min-height: 80px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  padding: 0.6rem;
+  font-family: monospace;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.form button.saveBtn,
+.form button.cancelBtn {
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+}
+
+.form button.saveBtn {
+  background: rgb(var(--btn-bg-primary));
+  color: rgb(var(--btn-text-primary));
+}
+
+.form button.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--input-border);
+  color: var(--text-primary);
+}
