@@ -8,6 +8,7 @@ import HowItWorks from "./Components/HowItWorks/HowItWorks";
 import PageLoader from "./Components/PageLoader/PageLoader";
 import TechStack from "./Components/TechStack/TechStack";
 import styles from "./page.module.css";
+import Features from "./Components/Features/Features";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +24,9 @@ export default function Home() {
 
       {/* Hero section */}
       <HeroSection />
+
+      {/* Features */}
+      <Features/>
 
       {/* How it works section */}
       <HowItWorks />

@@ -2,12 +2,7 @@
   width: 100%;
   padding: 6rem 1.5rem;
   position: relative;
-  background: linear-gradient(
-    var(--deg, 135deg),
-    var(--bg-gradient-start),
-    var(--bg-gradient-mid),
-    var(--bg-gradient-end)
-  );
+  background: transparent;
   background-size: 400% 400%;
   animation: animateBG 20s ease infinite;
   overflow: hidden;
@@ -25,14 +20,6 @@
   100% {
     background-position: 0% 50%;
   }
-}
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(20px);
-  z-index: 1;
 }
 
 .ctaContent {

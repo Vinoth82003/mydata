@@ -2,12 +2,7 @@
   width: 100%;
   padding: 6rem 1.5rem;
   position: relative;
-  background: linear-gradient(
-    var(--deg, 135deg),
-    var(--bg-gradient-start),
-    var(--bg-gradient-mid),
-    var(--bg-gradient-end)
-  );
+  background: transparent;
   background-size: 400% 400%;
   animation: animateBG 20s ease infinite;
   overflow: hidden;

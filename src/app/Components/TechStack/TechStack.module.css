@@ -2,6 +2,27 @@
   padding: 4rem 1.5rem;
   /* background: var(--bg-main); */
   color: var(--text-primary);
+  background: linear-gradient(
+    var(--deg, 135deg),
+    var(--bg-gradient-start),
+    var(--bg-gradient-mid),
+    var(--bg-gradient-end)
+  );
+  background-size: 400% 400%;
+  animation: animateBG 20s ease infinite;  
+}
+
+
+@keyframes animateBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .container {

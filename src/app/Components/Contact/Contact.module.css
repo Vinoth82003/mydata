@@ -3,13 +3,27 @@
   flex-wrap: wrap;
   gap: 2rem;
   padding: 4rem 2rem;
-  /* background: linear-gradient(
+  background: linear-gradient(
     var(--deg, 135deg),
     var(--bg-gradient-start),
     var(--bg-gradient-mid),
     var(--bg-gradient-end)
-  ); */
+  );
+  background-size: 400% 400%;
+  animation: animateBG 20s ease infinite;
   color: var(--text-primary);
+}
+
+@keyframes animateBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .textBlock {

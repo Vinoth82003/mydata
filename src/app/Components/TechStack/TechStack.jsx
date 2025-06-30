@@ -15,7 +15,7 @@ import {
 const techList = [
   {
     icon: <ShieldCheck className={styles.icon} />,
-    title: "NextAuth.js",
+    title: "Jwt Auth",
     desc: "Manages secure authentication and session handling with email OTP.",
   },
   {
@@ -35,7 +35,7 @@ const techList = [
   },
   {
     icon: <CalendarClock className={styles.icon} />,
-    title: "Google Calendar API",
+    title: "Customer Calendar",
     desc: "Integrates event syncing and reminders within your dashboard.",
   },
   {
@@ -50,8 +50,8 @@ const techList = [
   },
   {
     icon: <Cpu className={styles.icon} />,
-    title: "Framer Motion",
-    desc: "Powers smooth UI animations for a seamless user experience.",
+    title: "Dompurify",
+    desc: "Dompurify to sanitize the user input to frontend security.",
   },
 ];
 

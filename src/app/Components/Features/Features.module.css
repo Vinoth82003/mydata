@@ -1,0 +1,93 @@
+.section {
+    width: 100%;
+    padding: 6rem 1.5rem;
+    position: relative;
+    background: linear-gradient(
+      var(--deg, 135deg),
+      var(--bg-gradient-start),
+      var(--bg-gradient-mid),
+      var(--bg-gradient-end)
+    );
+    background-size: 400% 400%;
+    animation: animateBG 20s ease infinite;
+    overflow: hidden;
+  }
+  
+  
+  
+  @keyframes animateBG {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .subheading {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    font-size: 1rem;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  .card {
+    padding: 2rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.03);
+  }
+  
+  .iconWrapper {
+    margin-bottom: 1rem;
+  }
+  
+  .icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--accent);
+  }
+  
+  .cardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .cardDesc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  
