@@ -1,9 +1,9 @@
 /* DashboardHome.module.css */
 
 .wrapper {
-  background: var(--glass-bg);
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.194);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(5px);
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -15,6 +15,35 @@
 .header h1 {
   font-size: 2rem;
   margin: 0;
+}
+.hi {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: waveHi 2s infinite;
+}
+
+@keyframes waveHi {
+  0% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(14deg);
+  }
+  30% {
+    transform: rotate(-8deg);
+  }
+  45% {
+    transform: rotate(14deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .subtext {
@@ -115,6 +144,11 @@
   color: var(--text-secondary);
 }
 
+.activityList li {
+  margin-top: 0.5rem;
+}
+
 .accent {
   color: var(--accent);
+  opacity: 0.7;
 }

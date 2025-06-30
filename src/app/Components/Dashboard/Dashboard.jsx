@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import PasswordManager from "../PasswordManager/PasswordManager";
 import ProjectManager from "../ProjectManager/ProjectManager";
 import DashboardHome from "../DashboardHome/DashboardHome";
+import TeamsCalendar from "../TeamsCalendar/TeamsCalendar";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -160,7 +161,7 @@ export default function Dashboard() {
             <PasswordManager redirectToLogin={redirectToLogin} />
           </>
         )}
-        {activeMenu === "Calendar" && <h2>Your Calendar,</h2>}
+        {activeMenu === "Calendar" && <TeamsCalendar />}
         {activeMenu === "Notes" && <h2>Your Notes,</h2>}
         {activeMenu === "Todo" && <h2>Your Todo,</h2>}
         {activeMenu === "Settings" && <p>Settings coming soon!</p>}

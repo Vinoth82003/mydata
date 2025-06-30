@@ -41,7 +41,10 @@ export default function DashboardHome({ user }) {
       variants={fadeUp}
     >
       <motion.header className={styles.header} variants={fadeUp}>
-        <h1>Welcome back, {user.fname + " " + user.lname} 👋</h1>
+        <h1>
+          Welcome back, {user.fname + " " + user.lname}{" "}
+          <span className={styles.hi}>👋</span>
+        </h1>
         <p className={styles.subtext}>
           {date} · {time}
         </p>
