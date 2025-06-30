@@ -10,6 +10,7 @@ import Home from "../Home/Home";
 import toast from "react-hot-toast";
 import PasswordManager from "../PasswordManager/PasswordManager";
 import ProjectManager from "../ProjectManager/ProjectManager";
+import DashboardHome from "../DashboardHome/DashboardHome";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -135,10 +136,10 @@ export default function Dashboard() {
       <main className={styles.mainContent}>
         {activeMenu === "Home" && (
           <>
-            <h2 style={{ marginBottom: "10px" }}>
+            {/* <h2 style={{ marginBottom: "10px" }}>
               Welcome, {user.fname || user.email}
-            </h2>
-            <Home />
+            </h2> */}
+            <DashboardHome user={user} />
           </>
         )}
         {activeMenu === "Profile" && (
