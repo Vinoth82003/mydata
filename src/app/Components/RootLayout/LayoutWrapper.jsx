@@ -15,7 +15,7 @@ export default function LayoutWrapper({ children }) {
   return (
     <ThemeWrapper>
       <ThemeToggle />
-      <Frame deg="to bottom" isPartical={!isDashboard} />
+      <Frame deg="to bottom"/>
       <Toaster
         position="top-center"
         toastOptions={{

@@ -413,10 +413,13 @@
 .emptyState {
   padding: 4rem 2rem;
   margin-top: 2rem;
-  border: 2px dashed var(--border-color, #444);
-  background-color: var(--bg-secondary, #1a1a1a);
-  color: var(--text-secondary, #aaa);
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   border-radius: 12px;
+  color: var(--text-primary);
   text-align: center;
   display: flex;
   flex-direction: column;
