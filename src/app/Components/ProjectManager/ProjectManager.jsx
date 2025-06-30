@@ -11,6 +11,7 @@ import {
   Tag,
   Layers,
   X,
+  GlobeIcon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -35,7 +36,7 @@ export default function ProjectManager({ redirectToLogin }) {
       const data = await res.json();
       if (data.success) setProjects(data.data);
       else toast.error(data.error || "Failed to fetch");
-    } catch (err) {
+    } catch {
       toast.error("Server error");
     }
   };
@@ -43,7 +44,7 @@ export default function ProjectManager({ redirectToLogin }) {
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
     if (!storedToken) return redirectToLogin();
-    setToken(storedToken); // ✅ track it with React
+    setToken(storedToken);
     fetchProjects(storedToken);
   }, []);
 
@@ -63,7 +64,6 @@ export default function ProjectManager({ redirectToLogin }) {
           toast("No changes made");
           return;
         }
-
         const res = await fetch("/api/projects", {
           method: "PATCH",
           headers,
@@ -87,13 +87,9 @@ export default function ProjectManager({ redirectToLogin }) {
           setProjects((prev) => [data.data, ...prev]);
           toast.success("Added");
         } else {
-          if (data.error == "jwt expired") {
+          if (data.error === "jwt expired") {
             redirectToLogin();
-            Swal.fire(
-              "Error",
-              "Login expired, Login again to access your account",
-              "error"
-            );
+            Swal.fire("Error", "Login expired, Login again", "error");
           } else {
             Swal.fire("Error", data.error, "error");
           }
@@ -102,7 +98,7 @@ export default function ProjectManager({ redirectToLogin }) {
 
       setModalOpen(false);
       setEditProject(null);
-    } catch (e) {
+    } catch {
       toast.error("Server error");
     }
   };
@@ -167,175 +163,273 @@ export default function ProjectManager({ redirectToLogin }) {
 
       {/* Cards */}
       <div className={styles.grid}>
-        {filtered.map((project) => (
-          <motion.div
-            key={project._id}
-            className={styles.card}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className={styles.cardHeader}>
-              <h3 className={styles.title}>{project.title}</h3>
-            </div>
-
-            <p className={styles.description}>{project.description}</p>
-
-            <div className={styles.metaRow}>
-              <Layers size={16} className={styles.icon} />
-              <div className={styles.techStack}>
-                {project.techStack.map((tech, i) => (
-                  <span key={i} className={styles.techChip}>
-                    {tech}
-                  </span>
-                ))}
+        {projects.length === 0 ? (
+          <div className={styles.emptyState}>
+            <Layers size={48} strokeWidth={1.2} />
+            <h3>No projects added yet</h3>
+            <p>Start by clicking the "Add Project" button above.</p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className={styles.emptyState}>
+            <FileText size={48} strokeWidth={1.2} />
+            <h3>No matching results</h3>
+            <p>Try adjusting your search keywords.</p>
+          </div>
+        ) : (
+          filtered.map((project) => (
+            <motion.div
+              key={project._id}
+              className={styles.card}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className={styles.cardHeader}>
+                <h3 className={styles.title}>{project.title}</h3>
               </div>
-            </div>
 
-            <div className={styles.metaRow}>
-              <Tag size={16} className={styles.icon} />
-              <div className={styles.tagGroup}>
-                {project.tags.map((tag, i) => (
-                  <span key={i} className={styles.tag}>
-                    #{tag}
-                  </span>
-                ))}
+              <p className={styles.description}>{project.description}</p>
+
+              <div className={styles.metaRow}>
+                <Layers size={16} className={styles.icon} />
+                <div className={styles.techStack}>
+                  {project.techStack.map((tech, i) => (
+                    <span key={i} className={styles.techChip}>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div className={styles.linksRow}>
-              {project.repo && (
-                <a
-                  href={project.repo}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.linkBtn}
-                >
-                  <Github size={16} />
-                  Repository
-                </a>
-              )}
-              {project.live && (
-                <a
-                  href={project.live}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.linkBtn}
-                >
-                  <ExternalLink size={16} />
-                  Live Site
-                </a>
-              )}
-              {project.env?.length > 0 && (
-                <button
-                  className={styles.linkBtn}
-                  onClick={() =>
-                    setShowEnv(showEnv === project._id ? null : project._id)
-                  }
-                >
-                  <FileText size={16} />
-                  .env
-                </button>
-              )}
-            </div>
+              <div className={styles.metaRow}>
+                <Tag size={16} className={styles.icon} />
+                <div className={styles.tagGroup}>
+                  {project.tags.map((tag, i) => (
+                    <span key={i} className={styles.tag}>
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
 
-            {showEnv === project._id && (
-              <motion.div
-                className={styles.envBlock}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-              >
-                <div className={styles.envHeader}>
+              <div className={styles.linksRow}>
+                <GlobeIcon size={16} className={styles.icon} />
+                {project.repo && (
+                  <a
+                    href={project.repo}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.linkBtn}
+                  >
+                    <Github size={16} />
+                    Repository
+                  </a>
+                )}
+                {project.live && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.linkBtn}
+                  >
+                    <ExternalLink size={16} />
+                    Live Site
+                  </a>
+                )}
+                {(project.envGroups?.length > 0 || project.env?.length > 0) && (
                   <button
+                    className={styles.linkBtn}
+                    onClick={() =>
+                      setShowEnv(showEnv === project._id ? null : project._id)
+                    }
+                  >
+                    <FileText size={16} />
+                    .env
+                  </button>
+                )}
+              </div>
+
+              {/* ENV GROUP DISPLAY */}
+              {showEnv === project._id && (
+                <motion.div
+                  className={styles.envBlock}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                >
+                  {/* envGroups View */}
+                  {project.envGroups?.length > 0 &&
+                    project.envGroups.map((group, i) => (
+                      <div key={i} className={styles.envGroupBlock}>
+                        <div className={styles.envGroupHeader}>
+                          <strong>{group.groupName || `.env`}</strong>
+                          <div className={styles.envTools}>
+                            <button
+                              onClick={() => {
+                                const text = group.variables
+                                  .map((e) => `${e.key}=${e.value}`)
+                                  .join("\n");
+                                navigator.clipboard.writeText(text);
+                                toast.success(`Copied ${group.groupName}`);
+                              }}
+                            >
+                              Copy
+                            </button>
+                            <button
+                              onClick={() => {
+                                const text = group.variables
+                                  .map((e) => `${e.key}=${e.value}`)
+                                  .join("\n");
+                                const blob = new Blob([text], {
+                                  type: "text/plain",
+                                });
+                                const link = document.createElement("a");
+                                link.href = URL.createObjectURL(blob);
+                                link.download = group.groupName || ".env";
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                                URL.revokeObjectURL(link.href);
+                              }}
+                            >
+                              Download
+                            </button>
+                          </div>
+                        </div>
+                        <ul className={styles.envList}>
+                          {group.variables.map((e, j) => (
+                            <li key={j} className={styles.envItem}>
+                              <div className={styles.envInputWrapper}>
+                                <input
+                                  type="text"
+                                  className={styles.envKeyInput}
+                                  value={e.key}
+                                  readOnly
+                                />
+                                <input
+                                  type="text"
+                                  className={styles.envValueInput}
+                                  value={e.value}
+                                  readOnly
+                                />
+                                <button
+                                  className={styles.copyBtn}
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(
+                                      `${e.key}=${e.value}`
+                                    );
+                                    toast.success("Copied");
+                                  }}
+                                >
+                                  Copy
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+
+                  {/* Legacy flat env fallback */}
+                  {project.env?.length > 0 && (
+                    <div className={styles.envGroupBlock}>
+                      <div className={styles.envGroupHeader}>
+                        <strong>.env</strong>
+                        <div className={styles.envTools}>
+                          <button
+                            onClick={() => {
+                              const text = project.env
+                                .map((e) => `${e.key}=${e.value}`)
+                                .join("\n");
+                              navigator.clipboard.writeText(text);
+                              toast.success("Copied .env");
+                            }}
+                          >
+                            Copy
+                          </button>
+                          <button
+                            onClick={() => {
+                              const text = project.env
+                                .map((e) => `${e.key}=${e.value}`)
+                                .join("\n");
+                              const blob = new Blob([text], {
+                                type: "text/plain",
+                              });
+                              const link = document.createElement("a");
+                              link.href = URL.createObjectURL(blob);
+                              link.download = ".env";
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                              URL.revokeObjectURL(link.href);
+                            }}
+                          >
+                            Download
+                          </button>
+                        </div>
+                      </div>
+                      <ul className={styles.envList}>
+                        {project.env.map((e, i) => (
+                          <li key={i} className={styles.envItem}>
+                            <div className={styles.envInputWrapper}>
+                              <input
+                                type="text"
+                                className={styles.envKeyInput}
+                                value={e.key}
+                                readOnly
+                              />
+                              <input
+                                type="text"
+                                className={styles.envValueInput}
+                                value={e.value}
+                                readOnly
+                              />
+                              <button
+                                className={styles.copyBtn}
+                                onClick={() => {
+                                  navigator.clipboard.writeText(
+                                    `${e.key}=${e.value}`
+                                  );
+                                  toast.success("Copied");
+                                }}
+                              >
+                                Copy
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              <div className={styles.footer}>
+                <span className={styles.updated}>
+                  Updated {format(project.updatedAt)}
+                </span>
+                <div className={styles.buttons}>
+                  <button
+                    className={styles.editBtn}
                     onClick={() => {
-                      const text = project.env
-                        .map((e) => `${e.key}=${e.value}`)
-                        .join("\n");
-                      navigator.clipboard.writeText(text);
-                      toast.success(".env copied");
+                      setEditProject(project);
+                      setModalOpen(true);
                     }}
                   >
-                    Copy All
+                    <Pencil size={16} /> Edit
                   </button>
                   <button
-                    onClick={() => {
-                      const text = project.env
-                        .map((e) => `${e.key}=${e.value}`)
-                        .join("\n");
-                      const blob = new Blob([text], { type: "text/plain" });
-                      const link = document.createElement("a");
-                      link.href = URL.createObjectURL(blob);
-                      link.download = `.env`;
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                      URL.revokeObjectURL(link.href);
-                    }}
+                    className={styles.deleteBtn}
+                    onClick={() => handleDelete(project._id)}
                   >
-                    Download
+                    <Trash2 size={16} /> Delete
                   </button>
                 </div>
-
-                <ul className={styles.envList}>
-                  {project.env.map((e, i) => (
-                    <li key={i} className={styles.envItem}>
-                      <div className={styles.envInputWrapper}>
-                        <input
-                          type="text"
-                          className={styles.envKeyInput}
-                          value={e.key}
-                          readOnly
-                        />
-                        <input
-                          type="text"
-                          className={styles.envValueInput}
-                          value={e.value}
-                          readOnly
-                        />
-                        <button
-                          className={styles.copyBtn}
-                          onClick={() => {
-                            navigator.clipboard.writeText(
-                              `${e.key}=${e.value}`
-                            );
-                            toast.success("Copied");
-                          }}
-                        >
-                          Copy
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            )}
-
-            <div className={styles.footer}>
-              <span className={styles.updated}>
-                Updated {format(project.updatedAt)}
-              </span>
-              <div className={styles.buttons}>
-                <button
-                  className={styles.editBtn}
-                  onClick={() => {
-                    setEditProject(project);
-                    setModalOpen(true);
-                  }}
-                >
-                  <Pencil size={16} /> Edit
-                </button>
-                <button
-                  className={styles.deleteBtn}
-                  onClick={() => handleDelete(project._id)}
-                >
-                  <Trash2 size={16} /> Delete
-                </button>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))
+        )}
       </div>
 
-      {/* MODAL */}
+      {/* Modal */}
       <AnimatePresence>
         {modalOpen && (
           <motion.div
@@ -365,7 +459,6 @@ export default function ProjectManager({ redirectToLogin }) {
               >
                 <X size={20} />
               </button>
-
               <ProjectForm
                 initialData={editProject}
                 onSave={handleSave}

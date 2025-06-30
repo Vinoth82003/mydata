@@ -1,8 +1,15 @@
+// models/Project.js
+
 import mongoose from "mongoose";
 
-const EnvSchema = new mongoose.Schema({
+const EnvItemSchema = new mongoose.Schema({
   key: String,
   value: String,
+});
+
+const EnvGroupSchema = new mongoose.Schema({
+  groupName: { type: String, required: true },
+  variables: [EnvItemSchema],
 });
 
 const ProjectSchema = new mongoose.Schema(
@@ -18,7 +25,7 @@ const ProjectSchema = new mongoose.Schema(
     live: String,
     techStack: [String],
     tags: [String],
-    env: [EnvSchema],
+    envGroups: [EnvGroupSchema],
   },
   { timestamps: true }
 );

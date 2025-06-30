@@ -325,39 +325,119 @@
   padding: 0.4rem;
 }
 
+.envBlock {
+  margin-top: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 1rem;
+  color: var(--text-primary);
+  overflow: hidden;
+}
+
+.envGroupBlock {
+  margin-bottom: 1.5rem;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+}
+
+.envGroupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.envTools button {
+  margin-left: 0.5rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color, #444);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.envTools button:hover {
+  background: var(--accent-color, #3f3fff);
+  color: white;
+}
+
+.envList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.envItem {
+  margin-bottom: 0.5rem;
+}
+
 .envInputWrapper {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .envKeyInput,
 .envValueInput {
   flex: 1;
-  padding: 0.4rem 0.6rem;
+  padding: 6px 8px;
+  font-family: monospace;
+  font-size: 0.85rem;
   border: 1px solid var(--border-color, #444);
+  border-radius: 4px;
   background: var(--bg-secondary);
   color: var(--text-primary);
-  font-family: monospace;
-  font-size: 0.9rem;
-  border-radius: 4px;
-  width: 100%;
 }
 
 .copyBtn {
-  padding: 0.35rem 0.75rem;
-  font-size: 0.8rem;
-  background-color: #444;
+  background: var(--accent-color, #3f3fff);
   color: white;
   border: none;
+  padding: 6px 10px;
+  font-size: 0.75rem;
   border-radius: 4px;
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .copyBtn:hover {
-  background-color: #666;
+  background: #2c2cf0;
+}
+.emptyState {
+  padding: 4rem 2rem;
+  margin-top: 2rem;
+  border: 2px dashed var(--border-color, #444);
+  background-color: var(--bg-secondary, #1a1a1a);
+  color: var(--text-secondary, #aaa);
+  border-radius: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.emptyState svg {
+  stroke: var(--text-secondary, #999);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @media (max-width: 600px) {

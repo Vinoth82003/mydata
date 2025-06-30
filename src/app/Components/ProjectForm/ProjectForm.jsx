@@ -15,32 +15,74 @@ export default function ProjectForm({ onSave, onCancel, initialData = null }) {
     live: "",
     techStack: [],
     tags: [],
-    env: [],
+    envGroups: [],
   });
 
   const [techInput, setTechInput] = useState("");
   const [tagInput, setTagInput] = useState("");
-  const [pasteEnvMode, setPasteEnvMode] = useState(false);
-  const pasteEnvRef = useRef();
 
   useEffect(() => {
     if (isEdit) setForm(initialData);
   }, [initialData]);
 
-  const addEnvRow = () => {
-    setForm({ ...form, env: [...form.env, { key: "", value: "" }] });
+  const updateField = (field, value) =>
+    setForm((f) => ({ ...f, [field]: value }));
+
+  const updateEnvGroup = (i, group) => {
+    const updated = [...form.envGroups];
+    updated[i] = group;
+    updateField("envGroups", updated);
   };
 
-  const updateEnv = (i, field, value) => {
-    const updated = [...form.env];
-    updated[i][field] = value;
-    setForm({ ...form, env: updated });
-  };
-
-  const removeEnvRow = (i) => {
-    const updated = [...form.env];
+  const removeEnvGroup = (i) => {
+    const updated = [...form.envGroups];
     updated.splice(i, 1);
-    setForm({ ...form, env: updated });
+    updateField("envGroups", updated);
+  };
+
+  const addEnvGroup = () =>
+    updateField("envGroups", [
+      ...form.envGroups,
+      { groupName: "", variables: [] },
+    ]);
+
+  const addVariable = (i) => {
+    const group = { ...form.envGroups[i] };
+    group.variables = [...group.variables, { key: "", value: "" }];
+    updateEnvGroup(i, group);
+  };
+
+  const updateVariable = (groupIdx, varIdx, field, value) => {
+    const group = { ...form.envGroups[groupIdx] };
+    group.variables[varIdx][field] = value;
+    updateEnvGroup(groupIdx, group);
+  };
+
+  const removeVariable = (groupIdx, varIdx) => {
+    const group = { ...form.envGroups[groupIdx] };
+    group.variables.splice(varIdx, 1);
+    updateEnvGroup(groupIdx, group);
+  };
+
+  const parseEnvText = (text) => {
+    return text
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith("#") && line.includes("="))
+      .map((line) => {
+        const [key, ...rest] = line.split("=");
+        return { key: key.trim(), value: rest.join("=").trim() };
+      });
+  };
+
+  const handleEnvFile = async (e, groupIdx) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const text = await file.text();
+    const parsed = parseEnvText(text);
+    const group = { ...form.envGroups[groupIdx] };
+    group.variables = parsed;
+    updateEnvGroup(groupIdx, group);
   };
 
   const addChip = (field, value, setter) => {
@@ -53,26 +95,6 @@ export default function ProjectForm({ onSave, onCancel, initialData = null }) {
     const updated = [...form[field]];
     updated.splice(i, 1);
     setForm({ ...form, [field]: updated });
-  };
-
-  const handleEnvFile = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const text = await file.text();
-    parseEnvText(text);
-    e.target.value = ""; // reset file input
-  };
-
-  const parseEnvText = (text) => {
-    const lines = text.split("\n");
-    const parsed = lines
-      .map((line) => line.trim())
-      .filter((line) => line && !line.startsWith("#") && line.includes("="))
-      .map((line) => {
-        const [key, ...rest] = line.split("=");
-        return { key: key.trim(), value: rest.join("=").trim() };
-      });
-    setForm({ ...form, env: parsed });
   };
 
   const handleSubmit = (e) => {
@@ -93,27 +115,28 @@ export default function ProjectForm({ onSave, onCancel, initialData = null }) {
       <input
         placeholder="Project Title *"
         value={form.title}
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
+        onChange={(e) => updateField("title", e.target.value)}
         required
       />
       <textarea
         placeholder="Project Description *"
         value={form.description}
-        onChange={(e) => setForm({ ...form, description: e.target.value })}
+        onChange={(e) => updateField("description", e.target.value)}
         required
       />
 
       <input
         placeholder="Repository URL"
         value={form.repo}
-        onChange={(e) => setForm({ ...form, repo: e.target.value })}
+        onChange={(e) => updateField("repo", e.target.value)}
       />
       <input
         placeholder="Live Site URL"
         value={form.live}
-        onChange={(e) => setForm({ ...form, live: e.target.value })}
+        onChange={(e) => updateField("live", e.target.value)}
       />
 
+      {/* Tech Stack */}
       <div className={styles.chipInput}>
         <input
           placeholder="Tech Stack (Enter to add)"
@@ -136,6 +159,7 @@ export default function ProjectForm({ onSave, onCancel, initialData = null }) {
         </div>
       </div>
 
+      {/* Tags */}
       <div className={styles.chipInput}>
         <input
           placeholder="Tags (Enter to add)"
@@ -158,69 +182,89 @@ export default function ProjectForm({ onSave, onCancel, initialData = null }) {
         </div>
       </div>
 
+      {/* 🔐 Env Groups */}
       <div className={styles.envSection}>
-        <div className={styles.envHeader}>
-          <label>.env Variables</label>
-          <div className={styles.envTools}>
-            <button type="button" onClick={addEnvRow}>
-              <Plus size={14} /> Add One
-            </button>
+        <label style={{ marginBottom: "0.5rem" }}>.env Groups</label>
+        <button type="button" onClick={addEnvGroup}>
+          <Plus size={14} /> Add Group
+        </button>
 
-            <label className={styles.uploadBtn}>
-              <Upload size={14} /> Upload File
+        {form.envGroups.map((group, i) => (
+          <div key={i} className={styles.envGroup}>
+            <div className={styles.envGroupHeader}>
               <input
-                type="file"
-                accept=".env,.txt,.env.local,.local"
-                hidden
-                onChange={handleEnvFile}
+                placeholder="Group Name (e.g. .env.local)"
+                value={group.groupName}
+                onChange={(e) =>
+                  updateEnvGroup(i, { ...group, groupName: e.target.value })
+                }
               />
-            </label>
+              <button type="button" onClick={() => removeEnvGroup(i)}>
+                <X size={16} />
+              </button>
+            </div>
 
-            <button
-              type="button"
-              onClick={() => setPasteEnvMode(!pasteEnvMode)}
-            >
-              Paste .env
-            </button>
-          </div>
-        </div>
-
-        {pasteEnvMode && (
-          <textarea
-            ref={pasteEnvRef}
-            placeholder="Paste your full .env content here..."
-            className={styles.pasteEnv}
-            onBlur={(e) => parseEnvText(e.target.value)}
-          />
-        )}
-
-        {form.env.length > 0 && (
-          <div className={styles.envList}>
-            {form.env.map((env, i) => (
-              <div key={i} className={styles.envRow}>
+            <div className={styles.envTools}>
+              <button type="button" onClick={() => addVariable(i)}>
+                <Plus size={14} /> Add Variable
+              </button>
+              <label className={styles.uploadBtn}>
+                <Upload size={14} /> Upload
                 <input
-                  placeholder="KEY"
-                  value={env.key}
-                  onChange={(e) => updateEnv(i, "key", e.target.value)}
+                  type="file"
+                  accept=".env,.txt,.env.local"
+                  hidden
+                  onChange={(e) => handleEnvFile(e, i)}
                 />
-                <input
-                  placeholder="VALUE"
-                  value={env.value}
-                  onChange={(e) => updateEnv(i, "value", e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={() => removeEnvRow(i)}
-                  className={styles.removeBtn}
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ))}
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  const pasted = prompt("Paste .env content:");
+                  if (pasted) {
+                    const parsed = parseEnvText(pasted);
+                    const group = { ...form.envGroups[i] };
+                    group.variables = parsed;
+                    updateEnvGroup(i, group);
+                  }
+                }}
+              >
+                Paste
+              </button>
+            </div>
+
+            <div className={styles.envList}>
+              {group.variables.map((env, j) => (
+                <div key={j} className={styles.envRow}>
+                  <input
+                    placeholder="KEY"
+                    value={env.key}
+                    onChange={(e) =>
+                      updateVariable(i, j, "key", e.target.value)
+                    }
+                  />
+                  <input
+                    placeholder="VALUE"
+                    value={env.value}
+                    onChange={(e) =>
+                      updateVariable(i, j, "value", e.target.value)
+                    }
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeVariable(i, j)}
+                    className={styles.removeBtn}
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        )}
+        ))}
       </div>
 
+      {/* Footer Actions */}
       <div className={styles.actions}>
         <button type="submit" className={styles.saveBtn}>
           {isEdit ? "Update Project" : "Add Project"}

@@ -147,7 +147,7 @@ export default function Dashboard() {
             <Profile user={user} updateUser={handleUserUpdate} />
           </>
         )}
-        {activeMenu === "Project Data" && (
+        {activeMenu === "Project Manager" && (
           <>
             <h2>Your Project Data,</h2>
             <ProjectManager redirectToLogin={redirectToLogin} />

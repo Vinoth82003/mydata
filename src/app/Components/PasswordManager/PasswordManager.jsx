@@ -127,7 +127,7 @@ export default function PasswordManager({ redirectToLogin }) {
       const data = await res.json();
       if (data.success) {
         fetchEntries();
-        Swal.fire("Deleted!", "Your entry has been deleted.", "success");
+        toast.success("Deleted!", "Your entry has been deleted.", "success");
       } else {
         if (data.error == "jwt expired") {
           redirectToLogin();
@@ -304,174 +304,184 @@ export default function PasswordManager({ redirectToLogin }) {
       </div>
 
       <div className={styles.entries}>
-        {entries
-          .filter((entry) => {
-            const term = searchTerm.toLowerCase();
-            return (
-              entry.title.toLowerCase().includes(term) ||
-              entry.username.toLowerCase().includes(term) ||
-              (entry.website && entry.website.toLowerCase().includes(term))
-            );
-          })
-          .sort((a, b) => b.isFavorite - a.isFavorite)
-          .map((entry) =>
-            editingId === entry._id ? (
-              <>
-                <div className={styles.form} key={editingId + "-KEY"}>
-                  <input
-                    value={editForm.title}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, title: e.target.value })
-                    }
-                    placeholder="Title"
-                  />
-                  <input
-                    value={editForm.username}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, username: e.target.value })
-                    }
-                    placeholder="Username"
-                  />
-                  <input
-                    type="text"
-                    value={editForm.password}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, password: e.target.value })
-                    }
-                    placeholder="Password"
-                  />
-                  <input
-                    value={editForm.website}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, website: e.target.value })
-                    }
-                    placeholder="Website"
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "0.5rem",
-                      marginTop: "0.5rem",
-                    }}
-                  >
-                    <button onClick={updateEntry} disabled={editLoading}>
-                      {editLoading ? "Saving..." : "Save"}
-                    </button>
-                    <button onClick={() => setEditingId(null)}>Cancel</button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div key={entry._id} className={styles.entryCard}>
-                <h4 className={styles.title}>
-                  <Lock className={styles.icon} size={18} />
-                  {highlightMatch(entry.title, searchTerm)}
-                </h4>
-
-                <p className={styles.row}>
-                  <User2Icon size={16} className={styles.icon} />
-                  <span>{highlightMatch(entry.username, searchTerm)}</span>
-
-                  <button
-                    className={styles.copyBtn}
-                    onClick={() => {
-                      navigator.clipboard.writeText(entry.username);
-                      toast.success("Username copied!");
-                    }}
-                  >
-                    <Copy size={16} />
-                  </button>
-                </p>
-
-                <div className={styles.row}>
-                  <Lock size={16} className={styles.icon} />
-                  <span>
-                    {showPassword[entry._id] ? entry.password : "••••••••"}
-                  </span>
-                  <div className={styles.buttonGroup}>
-                    <button
-                      className={styles.revealBtn}
-                      onClick={() =>
-                        setShowPassword((prev) => ({
-                          ...prev,
-                          [entry._id]: !prev[entry._id],
-                        }))
+        {entries.length === 0 ? (
+          <div className={styles.emptyState}>
+            <Lock size={48} strokeWidth={1.2} />
+            <h3>No passwords saved yet</h3>
+            <p>Start by adding one using the form above.</p>
+          </div>
+        ) :   (
+          entries
+            .filter((entry) => {
+              const term = searchTerm.toLowerCase();
+              return (
+                entry.title.toLowerCase().includes(term) ||
+                entry.username.toLowerCase().includes(term) ||
+                (entry.website && entry.website.toLowerCase().includes(term))
+              );
+            })
+            .sort((a, b) => b.isFavorite - a.isFavorite)
+            .map((entry) =>
+              editingId === entry._id ? (
+                <>
+                  <div className={styles.form} key={editingId + "-KEY"}>
+                    <input
+                      value={editForm.title}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, title: e.target.value })
                       }
+                      placeholder="Title"
+                    />
+                    <input
+                      value={editForm.username}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, username: e.target.value })
+                      }
+                      placeholder="Username"
+                    />
+                    <input
+                      type="text"
+                      value={editForm.password}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, password: e.target.value })
+                      }
+                      placeholder="Password"
+                    />
+                    <input
+                      value={editForm.website}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, website: e.target.value })
+                      }
+                      placeholder="Website"
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "0.5rem",
+                        marginTop: "0.5rem",
+                      }}
                     >
-                      {showPassword[entry._id] ? (
-                        <EyeOff size={16} />
-                      ) : (
-                        <Eye size={16} />
-                      )}
-                    </button>
+                      <button onClick={updateEntry} disabled={editLoading}>
+                        {editLoading ? "Saving..." : "Save"}
+                      </button>
+                      <button onClick={() => setEditingId(null)}>Cancel</button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div key={entry._id} className={styles.entryCard}>
+                  <h4 className={styles.title}>
+                    <Lock className={styles.icon} size={18} />
+                    {highlightMatch(entry.title, searchTerm)}
+                  </h4>
+
+                  <p className={styles.row}>
+                    <User2Icon size={16} className={styles.icon} />
+                    <span>{highlightMatch(entry.username, searchTerm)}</span>
+
                     <button
                       className={styles.copyBtn}
                       onClick={() => {
-                        navigator.clipboard.writeText(entry.password);
-                        toast.success("Password copied!");
+                        navigator.clipboard.writeText(entry.username);
+                        toast.success("Username copied!");
                       }}
                     >
                       <Copy size={16} />
                     </button>
+                  </p>
+
+                  <div className={styles.row}>
+                    <Lock size={16} className={styles.icon} />
+                    <span>
+                      {showPassword[entry._id] ? entry.password : "••••••••"}
+                    </span>
+                    <div className={styles.buttonGroup}>
+                      <button
+                        className={styles.revealBtn}
+                        onClick={() =>
+                          setShowPassword((prev) => ({
+                            ...prev,
+                            [entry._id]: !prev[entry._id],
+                          }))
+                        }
+                      >
+                        {showPassword[entry._id] ? (
+                          <EyeOff size={16} />
+                        ) : (
+                          <Eye size={16} />
+                        )}
+                      </button>
+                      <button
+                        className={styles.copyBtn}
+                        onClick={() => {
+                          navigator.clipboard.writeText(entry.password);
+                          toast.success("Password copied!");
+                        }}
+                      >
+                        <Copy size={16} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {entry.website && (
+                    <a
+                      href={
+                        entry.website.startsWith("http")
+                          ? entry.website
+                          : `https://${entry.website}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.website}
+                    >
+                      <span>{highlightMatch(entry.website, searchTerm)}</span>
+                    </a>
+                  )}
+
+                  <div className={styles.actions}>
+                    <span className={styles.updatedAt}>
+                      updated {format(entry.updatedAt)}
+                    </span>
+
+                    <button
+                      onClick={() =>
+                        toggleFavorite(entry._id, entry.isFavorite)
+                      }
+                      className={styles.favoriteBtn}
+                      title={
+                        entry.isFavorite
+                          ? "Remove from favorites"
+                          : "Add to favorites"
+                      }
+                    >
+                      {entry.isFavorite ? (
+                        <Star fill="gold" color="gold" size={18} />
+                      ) : (
+                        <StarOff size={18} />
+                      )}
+                    </button>
+
+                    <button
+                      className={styles.editBtn}
+                      onClick={() => handleEdit(entry)}
+                      title="Edit"
+                    >
+                      Edit
+                      <Pencil size={16} />
+                    </button>
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => deleteEntry(entry._id, entry.title)}
+                      title="Delete"
+                    >
+                      Delete
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 </div>
-
-                {entry.website && (
-                  <a
-                    href={
-                      entry.website.startsWith("http")
-                        ? entry.website
-                        : `https://${entry.website}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.website}
-                  >
-                    <span>{highlightMatch(entry.website, searchTerm)}</span>
-                  </a>
-                )}
-
-                <div className={styles.actions}>
-                  <span className={styles.updatedAt}>
-                    updated {format(entry.updatedAt)}
-                  </span>
-
-                  <button
-                    onClick={() => toggleFavorite(entry._id, entry.isFavorite)}
-                    className={styles.favoriteBtn}
-                    title={
-                      entry.isFavorite
-                        ? "Remove from favorites"
-                        : "Add to favorites"
-                    }
-                  >
-                    {entry.isFavorite ? (
-                      <Star fill="gold" color="gold" size={18} />
-                    ) : (
-                      <StarOff size={18} />
-                    )}
-                  </button>
-
-                  <button
-                    className={styles.editBtn}
-                    onClick={() => handleEdit(entry)}
-                    title="Edit"
-                  >
-                    Edit
-                    <Pencil size={16} />
-                  </button>
-                  <button
-                    className={styles.deleteBtn}
-                    onClick={() => deleteEntry(entry._id, entry.title)}
-                    title="Delete"
-                  >
-                    Delete
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              </div>
+              )
             )
-          )}
+        )}
       </div>
     </div>
   );
