@@ -6,12 +6,11 @@ import PageLoader from "../PageLoader/PageLoader";
 import styles from "./Dashboard.module.css";
 import Sidebar from "../Sidebar/Sidebar";
 import Profile from "../Profile/Profile";
-import Home from "../Home/Home";
 import toast from "react-hot-toast";
 import PasswordManager from "../PasswordManager/PasswordManager";
 import ProjectManager from "../ProjectManager/ProjectManager";
 import DashboardHome from "../DashboardHome/DashboardHome";
-import TeamsCalendar from "../TeamsCalendar/TeamsCalendar";
+import AdvancedCalendar from "../AdvancedCalendar/AdvancedCalendar";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -161,7 +160,7 @@ export default function Dashboard() {
             <PasswordManager redirectToLogin={redirectToLogin} />
           </>
         )}
-        {activeMenu === "Calendar" && <TeamsCalendar />}
+        {activeMenu === "Calendar" && <AdvancedCalendar />}
         {activeMenu === "Notes" && <h2>Your Notes,</h2>}
         {activeMenu === "Todo" && <h2>Your Todo,</h2>}
         {activeMenu === "Settings" && <p>Settings coming soon!</p>}

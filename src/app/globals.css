@@ -1,7 +1,7 @@
 :root {
   /* Backgrounds */
   --bg-main: #0a0a0f;
-  --bg-secondary: #121218;
+  --bg-secondary: #1212187d;
   --bg-gradient-start: #111122;
   --bg-gradient-mid: #1a1f3c;
   --bg-gradient-end: #2b1a4e;
@@ -49,7 +49,7 @@
 [data-theme="light"] {
   /* Backgrounds */
   --bg-main: #ececec;
-  --bg-secondary: #ffffff;
+  --bg-secondary: #ffffff79;
   --bg-gradient-start: #ffffff;
   --bg-gradient-mid: #ffffff;
   --bg-gradient-end: #ffffff;

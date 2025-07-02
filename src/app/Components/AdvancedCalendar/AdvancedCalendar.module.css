@@ -1,0 +1,67 @@
+.container {
+  background: var(--bg-main);
+  color: var(--text-primary);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.toolbar button {
+  padding: 6px 12px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fullcalendar :global(.fc) {
+  background: var(--bg-secondary);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.fullcalendar :global(.fc-event) {
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1111;
+}
+
+.modal {
+  background: #1e1e2f;
+  padding: 20px;
+  border-radius: 10px;
+  width: 320px;
+}
+
+.modal input {
+  width: 100%;
+  margin: 6px 0;
+  padding: 6px;
+  border-radius: 4px;
+  border: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}

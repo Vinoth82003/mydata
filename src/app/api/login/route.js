@@ -12,7 +12,6 @@ export async function POST(req) {
   try {
     const { email, password, keepSignedIn } = await req.json();
 
-    console.log("Incomming: ", email, password, keepSignedIn);
 
     if (!email || !password) {
       return Response.json({ error: "Missing credentials" }, { status: 400 });
