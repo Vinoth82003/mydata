@@ -11,6 +11,7 @@ import PasswordManager from "../PasswordManager/PasswordManager";
 import ProjectManager from "../ProjectManager/ProjectManager";
 import DashboardHome from "../DashboardHome/DashboardHome";
 import AdvancedCalendar from "../AdvancedCalendar/AdvancedCalendar";
+import TodoList from "../TodoList/TodoList";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -136,10 +137,7 @@ export default function Dashboard() {
       <main className={styles.mainContent}>
         {activeMenu === "Home" && (
           <>
-            {/* <h2 style={{ marginBottom: "10px" }}>
-              Welcome, {user.fname || user.email}
-            </h2> */}
-            <DashboardHome user={user} />
+            <DashboardHome user={user} setActiveMenu={setActiveMenu} />
           </>
         )}
         {activeMenu === "Profile" && (
@@ -162,7 +160,9 @@ export default function Dashboard() {
         )}
         {activeMenu === "Calendar" && <AdvancedCalendar />}
         {activeMenu === "Notes" && <h2>Your Notes,</h2>}
-        {activeMenu === "Todo" && <h2>Your Todo,</h2>}
+        {activeMenu === "Todo" && (
+          <TodoList redirectToLogin={redirectToLogin} />
+        )}
         {activeMenu === "Settings" && <p>Settings coming soon!</p>}
       </main>
     </div>

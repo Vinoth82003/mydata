@@ -1,5 +1,4 @@
 .container {
-  background: var(--bg-main);
   color: var(--text-primary);
   padding: 10px;
   border-radius: 8px;
@@ -20,8 +19,12 @@
   cursor: pointer;
 }
 
+.fullcalendar{
+  color: #1e1e2f;
+}
+
 .fullcalendar :global(.fc) {
-  background: var(--bg-secondary);
+  /* background: var(--bg-secondary); */
   padding: 10px;
   border-radius: 8px;
 }
@@ -43,13 +46,15 @@
   align-items: center;
   justify-content: center;
   z-index: 1111;
+  backdrop-filter: blur(3px);
 }
 
 .modal {
-  background: #1e1e2f;
+  background: var(--bg-gradient-start);
   padding: 20px;
   border-radius: 10px;
   width: 320px;
+  box-shadow: 0 0px 10px 0px rgba(197, 197, 197, 0.461);
 }
 
 .modal input {
@@ -57,11 +62,20 @@
   margin: 6px 0;
   padding: 6px;
   border-radius: 4px;
-  border: none;
+  border: 1px solid var(--border-color);
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+}
+
+.modal button{
+  padding: 6px 12px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }

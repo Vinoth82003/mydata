@@ -1,6 +1,5 @@
 import { connectDB } from "@/lib/db";
-import PasswordEntry from "@/models/PasswordEntry";
-import { encrypt, decrypt } from "@/lib/encryption";
+import TodoTask from "@/models/TodoTask";
 import { verifyToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { logActivity } from "@/lib/logActivity";
@@ -17,13 +16,8 @@ export async function GET(req) {
   try {
     const userId = await getUserId(req);
     await connectDB();
-    const entries = await PasswordEntry.find({ userId }).lean();
-    const decrypted = entries.map((e) => ({
-      ...e,
-      password: decrypt(e.password),
-    }));
-
-    return NextResponse.json({ success: true, data: decrypted });
+    const tasks = await TodoTask.find({ userId }).sort({ createdAt: -1 });
+    return NextResponse.json({ success: true, data: tasks });
   } catch (e) {
     return NextResponse.json(
       { success: false, error: e.message },
@@ -36,24 +30,13 @@ export async function POST(req) {
   try {
     const userId = await getUserId(req);
     await connectDB();
-    const data = await req.json();
-    const encrypted = encrypt(data.password);
-    const entry = await PasswordEntry.create({
-      ...data,
-      password: encrypted,
-      userId,
+    const body = await req.json();
+    const newTask = await TodoTask.create({ ...body, userId });
+    await logActivity(userId, "todo_added", `Added task: ${body.text}`, {
+      taskId: newTask._id,
     });
 
-    await logActivity(
-      userId,
-      "password_added",
-      `Added password for ${data.title}`,
-      {
-        entryId: entry._id,
-      }
-    );
- 
-    return NextResponse.json({ success: true, data: entry });
+    return NextResponse.json({ success: true, data: newTask });
   } catch (e) {
     return NextResponse.json(
       { success: false, error: e.message },
@@ -67,22 +50,18 @@ export async function PATCH(req) {
     const userId = await getUserId(req);
     await connectDB();
     const { id, updates } = await req.json();
-    const entry = await PasswordEntry.findById(id);
-    if (!entry || entry.userId.toString() !== userId)
+    const task = await TodoTask.findById(id);
+    if (!task || task.userId.toString() !== userId)
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
-    if (updates.password) updates.password = encrypt(updates.password);
-    const updated = await PasswordEntry.findByIdAndUpdate(id, updates, {
+
+    const updated = await TodoTask.findByIdAndUpdate(id, updates, {
       new: true,
     });
 
-    await logActivity(
-      userId,
-      "password_updated",
-      `Updated password for ${updated.title}`,
-      {
-        entryId: updated._id,
-      }
-    );
+    await logActivity(userId, "todo_updated", `Updated task: ${updated.text}`, {
+      taskId: updated._id,
+      updates,
+    });
 
     return NextResponse.json({ success: true, data: updated });
   } catch (e) {
@@ -98,21 +77,16 @@ export async function DELETE(req) {
     const userId = await getUserId(req);
     await connectDB();
     const id = req.nextUrl.searchParams.get("id");
-    const entry = await PasswordEntry.findById(id);
-    if (!entry || entry.userId.toString() !== userId)
+    const task = await TodoTask.findById(id);
+    if (!task || task.userId.toString() !== userId)
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
-    await PasswordEntry.findByIdAndDelete(id);
+    await TodoTask.findByIdAndDelete(id);
 
-    await logActivity(
-      userId,
-      "password_deleted",
-      `Deleted password entry "${entry.title}"`,
-      {
-        entryId: entry._id,
-      }
-    );
-    
-    return NextResponse.json({ success: true, message: "Entry deleted" });
+    await logActivity(userId, "todo_deleted", `Deleted task: ${task.text}`, {
+      taskId: task._id,
+    });
+
+    return NextResponse.json({ success: true });
   } catch (e) {
     return NextResponse.json(
       { success: false, error: e.message },

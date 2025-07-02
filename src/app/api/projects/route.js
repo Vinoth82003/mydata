@@ -3,6 +3,7 @@ import Project from "@/models/Project";
 import { encrypt, decrypt } from "@/lib/encryption";
 import { verifyToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import { logActivity } from "@/lib/logActivity";
 
 // 🧠 Extract user ID from token
 async function getUserId(req) {
@@ -77,6 +78,16 @@ export async function POST(req) {
       })),
     };
 
+    // Log activity
+    await logActivity(
+      userId,
+      "project_created",
+      `Created project "${data.title}"`,
+      {
+        projectId: project._id,
+      }
+    );
+    
     return NextResponse.json({ success: true, data: decrypted });
   } catch (e) {
     return NextResponse.json(
@@ -122,6 +133,16 @@ export async function PATCH(req) {
       })),
     };
 
+
+    await logActivity(
+      userId,
+      "project_updated",
+      `Updated project "${updated.title}"`,
+      {
+        projectId: updated._id,
+      }
+    );
+    
     return NextResponse.json({ success: true, data: decrypted });
   } catch (e) {
     return NextResponse.json(
@@ -142,6 +163,16 @@ export async function DELETE(req) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
 
     await Project.findByIdAndDelete(id);
+
+    
+    await logActivity(
+      userId,
+      "project_deleted",
+      `Deleted project "${project.title}"`,
+      {
+        projectId: project._id,
+      }
+    );
     return NextResponse.json({ success: true, message: "Project deleted" });
   } catch (e) {
     return NextResponse.json(

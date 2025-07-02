@@ -4,6 +4,7 @@ import Otp from "@/models/Otp";
 import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
+import { logActivity } from "@/lib/logActivity";
 
 export async function PATCH(req) {
   try {
@@ -67,6 +68,15 @@ export async function PATCH(req) {
     otpRecord.code = "";
     otpRecord.expiresAt = "";
     await otpRecord.save();
+
+    await logActivity(
+      user._id,
+      type,
+      `${type === "changeEmail" ? "Changed email" : "Changed password"}`,
+      {
+        ...(type === "changeEmail" && { newEmail }),
+      }
+    );
 
     return Response.json({
       message: `${

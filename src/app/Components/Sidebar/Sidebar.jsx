@@ -37,9 +37,9 @@ export default function Sidebar({
     { label: "Password Manager", icon: <Shield /> },
     { label: "Project Manager", icon: <DatabaseBackup /> },
     { label: "Calendar", icon: <CalendarDays /> },
-    { label: "Notes", icon: <NotebookText /> },
     { label: "Todo", icon: <ListTodo /> },
-    { label: "Settings", icon: <Settings /> },
+    // { label: "Notes", icon: <NotebookText /> },
+    // { label: "Settings", icon: <Settings /> },
   ];
 
   return (

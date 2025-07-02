@@ -1,0 +1,86 @@
+.wrapper {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+
+.heading {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.inputRow {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.inputRow input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--bg-gradient-mid);
+  background: var(--bg-main);
+  color: var(--text-primary);
+}
+
+.inputRow button {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  background: #1b5fac;
+  color: white;
+  cursor: pointer;
+}
+
+.taskList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.taskItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--bg-main);
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  transition: background 0.2s;
+}
+
+.taskItem span {
+  flex: 1;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.taskItem button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.completed span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.checkIcon {
+  color: #4caf50;
+}
+
+.uncheckIcon {
+  color: #888;
+}
+
+.deleteBtn {
+  color: #ff4d4f;
+}

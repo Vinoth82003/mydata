@@ -3,6 +3,7 @@ import User from "@/models/User";
 import { verifyToken } from "@/lib/auth";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
+import { logActivity } from "@/lib/logActivity";
 
 export async function PATCH(req) {
   try {
@@ -52,6 +53,14 @@ export async function PATCH(req) {
 
     await user.save();
 
+    await logActivity(user._id, "profile_updated", "User updated profile", {
+      fname,
+      lname,
+      imageChanged: !!image,
+      removedImage: !!removeImage,
+      twoFaEnabled,
+    });
+    
     return Response.json({ message: "Profile updated successfully" });
   } catch (err) {
     console.error("Update error:", err);
