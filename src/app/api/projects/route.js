@@ -4,6 +4,7 @@ import { encrypt, decrypt } from "@/lib/encryption";
 import { verifyToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { logActivity } from "@/lib/logActivity";
+import User from "@/models/User";
 
 // 🧠 Extract user ID from token
 async function getUserId(req) {
@@ -119,6 +120,17 @@ export async function PATCH(req) {
         })),
       }));
     }
+
+    if (updates.userId) {
+      const userExists = await User.exists({ _id: updates.userId });
+      if (!userExists) {
+        return NextResponse.json(
+          { error: "Cannot update: referenced user does not exist" },
+          { status: 400 }
+        );
+      }
+    }
+    
 
     const updated = await Project.findByIdAndUpdate(id, updates, { new: true });
 

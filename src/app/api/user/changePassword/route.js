@@ -17,6 +17,15 @@ export async function POST(req) {
 
     await connectDB();
 
+    const otpVerified = await Otp.findOne({ email });
+
+    if (!otpVerified || !otpVerified.isVerified) {
+      return Response.json(
+        { error: "Please verify your email with OTP before signing up" },
+        { status: 403 }
+      );
+    }
+
     const user = await User.findOne({ email });
     if (!user)
       return Response.json({ error: "User not found" }, { status: 404 });

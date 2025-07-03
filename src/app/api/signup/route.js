@@ -5,6 +5,7 @@ import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
 import { signToken } from "@/lib/auth";
 import { cookies } from "next/headers";
+import Otp from "@/models/Otp";
 
 export async function POST(req) {
   try {
@@ -39,6 +40,15 @@ export async function POST(req) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    const otpVerified = await Otp.findOne({ email });
+
+    if (!otpVerified || !otpVerified.isVerified) {
+      return Response.json(
+        { error: "Please verify your email with OTP before signing up" },
+        { status: 403 }
+      );
+    }
 
     const newUser = new User({
       fname,

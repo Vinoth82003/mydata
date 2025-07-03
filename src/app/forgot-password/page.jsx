@@ -93,7 +93,6 @@ export default function ForgotPassword() {
   };
 
   const handleResetPassword = async () => {
-    // if (newPassword.length < 6) return toast.error("Password too short");
     if (newPassword !== confirmPassword)
       return toast.error("Passwords do not match");
 
@@ -171,7 +170,6 @@ export default function ForgotPassword() {
               value={newPassword}
               onChange={(e) => {
                 setNewPassword(e.target.value);
-                // setPasswordStrength(getPasswordStrength(e.target.value));
               }}
             />
             <button
@@ -182,15 +180,6 @@ export default function ForgotPassword() {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-
-          {/* {newPassword && (
-            <div className={styles.strength}>
-              Strength:{" "}
-              <span className={styles[passwordStrength.toLowerCase()]}>
-                {passwordStrength}
-              </span>
-            </div>
-          )} */}
 
           <label>Confirm Password</label>
           <div className={styles.passwordField}>

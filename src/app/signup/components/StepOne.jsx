@@ -10,7 +10,7 @@ export default function StepOne() {
   const { formData, setFormData, nextStep } = useSignup();
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
+  
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 

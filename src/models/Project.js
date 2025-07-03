@@ -30,5 +30,18 @@ const ProjectSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+ProjectSchema.pre("save", async function (next) {
+  const userExists = await mongoose.models.User.exists({ _id: this.userId });
+  if (!userExists) {
+    const err = new Error(
+      "Cannot save project: referenced user does not exist."
+    );
+    return next(err);
+  }
+  next();
+});
+
+
+
 export default mongoose.models.Project ||
   mongoose.model("Project", ProjectSchema);

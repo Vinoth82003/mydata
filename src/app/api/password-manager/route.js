@@ -4,6 +4,7 @@ import { encrypt, decrypt } from "@/lib/encryption";
 import { verifyToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { logActivity } from "@/lib/logActivity";
+import User from "@/models/User";
 
 async function getUserId(req) {
   const token = req.headers.get("authorization")?.split(" ")[1];
@@ -36,8 +37,18 @@ export async function POST(req) {
   try {
     const userId = await getUserId(req);
     await connectDB();
+
+    const userExists = await User.exists({ _id: userId });
+    if (!userExists) {
+      return NextResponse.json(
+        { success: false, error: "User does not exist" },
+        { status: 404 }
+      );
+    }
+
     const data = await req.json();
     const encrypted = encrypt(data.password);
+
     const entry = await PasswordEntry.create({
       ...data,
       password: encrypted,
@@ -48,11 +59,9 @@ export async function POST(req) {
       userId,
       "password_added",
       `Added password for ${data.title}`,
-      {
-        entryId: entry._id,
-      }
+      { entryId: entry._id }
     );
- 
+
     return NextResponse.json({ success: true, data: entry });
   } catch (e) {
     return NextResponse.json(
@@ -62,14 +71,25 @@ export async function POST(req) {
   }
 }
 
+
 export async function PATCH(req) {
   try {
     const userId = await getUserId(req);
     await connectDB();
+
+    const userExists = await User.exists({ _id: userId });
+    if (!userExists) {
+      return NextResponse.json(
+        { success: false, error: "User does not exist" },
+        { status: 404 }
+      );
+    }
+
     const { id, updates } = await req.json();
     const entry = await PasswordEntry.findById(id);
     if (!entry || entry.userId.toString() !== userId)
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
+
     if (updates.password) updates.password = encrypt(updates.password);
     const updated = await PasswordEntry.findByIdAndUpdate(id, updates, {
       new: true,
@@ -79,9 +99,7 @@ export async function PATCH(req) {
       userId,
       "password_updated",
       `Updated password for ${updated.title}`,
-      {
-        entryId: updated._id,
-      }
+      { entryId: updated._id }
     );
 
     return NextResponse.json({ success: true, data: updated });
@@ -92,6 +110,7 @@ export async function PATCH(req) {
     );
   }
 }
+
 
 export async function DELETE(req) {
   try {

@@ -14,5 +14,16 @@ const ActivitySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// ✅ Pre-save hook to check if user exists
+ActivitySchema.pre("save", async function (next) {
+  const userExists = await mongoose.models.User.exists({ _id: this.userId });
+  if (!userExists) {
+    return next(
+      new Error("Cannot save activity: referenced user does not exist.")
+    );
+  }
+  next();
+});
+
 export default mongoose.models.Activity ||
   mongoose.model("Activity", ActivitySchema);

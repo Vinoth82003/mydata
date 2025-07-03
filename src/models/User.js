@@ -10,4 +10,10 @@ const userSchema = new mongoose.Schema({
   twoFaEnabled: { type: Boolean, default: false },
 });
 
+userSchema.post("findOneAndDelete", async function (doc) {
+  if (doc) {
+    await Project.deleteMany({ userId: doc._id });
+  }
+});
+
 export default mongoose.models.User || mongoose.model("User", userSchema);

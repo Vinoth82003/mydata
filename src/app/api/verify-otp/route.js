@@ -27,6 +27,7 @@ export async function POST(req) {
   // OTP is correct
   user.code = "";
   user.expiresAt = "";
+  user.isVerified = true; 
   await user.save();
 
   return Response.json({ success: true });

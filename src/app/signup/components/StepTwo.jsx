@@ -27,6 +27,7 @@ export default function StepTwo() {
       const data = await res.json();
 
       if (res.ok) {
+        
         toast.success("OTP verified");
         nextStep();
       } else {
