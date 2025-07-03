@@ -14,7 +14,7 @@ export async function PATCH(req) {
     const decoded = verifyToken(token, process.env.ACCESS_SECRET);
     await connectDB();
 
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded.id); 
     if (!user)
       return Response.json({ error: "User not found" }, { status: 404 });
 

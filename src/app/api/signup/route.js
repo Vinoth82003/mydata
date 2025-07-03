@@ -77,7 +77,8 @@ export async function POST(req) {
         maxAge: 7 * 24 * 60 * 60, // 7 days
       });
     }
-
+    otpVerified.isVerified = false; 
+    await otpVerified.save();
     return Response.json({ accessToken }, { status: 201 });
   } catch (err) {
     console.error("Signup Error:", err);
