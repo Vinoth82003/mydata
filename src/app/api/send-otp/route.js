@@ -24,6 +24,13 @@ export async function POST(req) {
       }
     }
 
+    if (type == "changePassword") {
+      const existingUser = await User.findOne({ email });
+      if (!existingUser) {
+        return Response.json({ error: "User Not exists" }, { status: 409 });
+      }
+    }
+
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 

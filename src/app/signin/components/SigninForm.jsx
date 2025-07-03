@@ -96,6 +96,12 @@ export default function SigninForm() {
           Create an account
         </a>
       </div>
+      <div className={styles.linkwarpper}>
+        Forgot Password?{" "}
+        <a href="/forgot-password" className={styles.link}>
+          Change Now
+        </a>
+      </div>
     </div>
   ) : (
     <OTPForm
