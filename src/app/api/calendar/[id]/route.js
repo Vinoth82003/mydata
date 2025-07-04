@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 import { logActivity } from "@/lib/logActivity";
 import User from "@/models/User";
 
-// 🔐 Auth check
 async function getUserId(req) {
   const token = req.headers.get("authorization")?.split(" ")[1];
   if (!token) throw new Error("Unauthorized");
@@ -14,7 +13,6 @@ async function getUserId(req) {
   return decoded.id;
 }
 
-// 🟠 PUT Update Event
 export async function PUT(req, { params }) {
   try {
     const userId = await getUserId(req);
@@ -62,7 +60,6 @@ export async function PUT(req, { params }) {
 }
 
 
-// 🔴 DELETE Event
 export async function DELETE(req, { params }) {
   try {
     const userId = await getUserId(req);

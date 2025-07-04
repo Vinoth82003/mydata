@@ -24,7 +24,6 @@ export async function POST(req) {
     return Response.json({ error: "Incorrect OTP" }, { status: 401 });
   }
 
-  // OTP is correct
   user.code = "";
   user.expiresAt = "";
   user.isVerified = true; 

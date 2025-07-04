@@ -66,7 +66,6 @@ export async function POST(req) {
       keepSignedIn
     );
 
-    // If user wants to stay signed in, store refresh token in secure cookie
     if (keepSignedIn && refreshToken) {
       const cookieStore = cookies();
       cookieStore.set("refreshToken", refreshToken, {

@@ -3,9 +3,8 @@ import Event from "@/models/Event";
 import { verifyToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { logActivity } from "@/lib/logActivity";
-import User from "@/models/User"; // ✅ Add this line at the top
+import User from "@/models/User"; 
 
-// 🔐 Extract userId
 async function getUserId(req) {
   const token = req.headers.get("authorization")?.split(" ")[1];
   if (!token) throw new Error("Unauthorized");
@@ -14,7 +13,6 @@ async function getUserId(req) {
   return decoded.id;
 }
 
-// 🟢 GET Events
 export async function GET(req) {
   try {
     const userId = await getUserId(req);

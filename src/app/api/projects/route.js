@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 import { logActivity } from "@/lib/logActivity";
 import User from "@/models/User";
 
-// 🧠 Extract user ID from token
 async function getUserId(req) {
   const token = req.headers.get("authorization")?.split(" ")[1];
   if (!token) throw new Error("Unauthorized");
@@ -15,7 +14,6 @@ async function getUserId(req) {
   return decoded.id;
 }
 
-// 🟢 GET Projects
 export async function GET(req) {
   try {
     const userId = await getUserId(req);
@@ -23,7 +21,6 @@ export async function GET(req) {
 
     const projects = await Project.find({ userId }).lean();
 
-    // 🔓 Decrypt envGroups
     const decrypted = projects.map((proj) => ({
       ...proj,
       envGroups:
@@ -45,7 +42,6 @@ export async function GET(req) {
   }
 }
 
-// 🟡 POST Project
 export async function POST(req) {
   try {
     const userId = await getUserId(req);
@@ -53,7 +49,6 @@ export async function POST(req) {
 
     const data = await req.json();
 
-    // 🔐 Encrypt envGroups
     const encryptedGroups = (data.envGroups || []).map((group) => ({
       groupName: group.groupName,
       variables: group.variables.map((e) => ({
@@ -79,7 +74,6 @@ export async function POST(req) {
       })),
     };
 
-    // Log activity
     await logActivity(
       userId,
       "project_created",
@@ -98,7 +92,6 @@ export async function POST(req) {
   }
 }
 
-// 🟠 PATCH Project
 export async function PATCH(req) {
   try {
     const userId = await getUserId(req);
@@ -110,7 +103,6 @@ export async function PATCH(req) {
     if (!project || project.userId.toString() !== userId)
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
 
-    // 🔐 Encrypt envGroups if updating
     if (updates.envGroups) {
       updates.envGroups = updates.envGroups.map((group) => ({
         groupName: group.groupName,
