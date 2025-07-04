@@ -121,12 +121,12 @@ export default function StepOne() {
           Sign in
         </a>
       </div>
-      <div className={styles.googleBtnWrapper}>
+      {/* <div className={styles.googleBtnWrapper}>
         <button className={styles.googleBtn} onClick={handleGoogleSignup}>
           <FcGoogle size={20} />
           <span>Sign up with Google</span>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
