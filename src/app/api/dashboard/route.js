@@ -29,7 +29,7 @@ export async function GET(req) {
     const todosToday = await TodoTask.find({
       userId,
       completed: false,
-      createdAt: { $gte: todayStart, $lte: todayEnd },
+      // createdAt: { $gte: todayStart, $lte: todayEnd },
     });
 
     // 2. Upcoming events
