@@ -160,7 +160,7 @@ export default function DashboardHome({ user, setActiveMenu }) {
               {summary.projectSummary.map((proj, i) => (
                 <div className={styles.projectRow} key={i}>
                   <span>{proj.title}</span>
-                  <span>{proj.envCount} envs</span>
+                  <span className={styles.accent}>{proj.envCount} envs</span>
                 </div>
               ))}
             </div>
@@ -183,6 +183,9 @@ export default function DashboardHome({ user, setActiveMenu }) {
                   {log.type.replace("_", " ")}
                 </span>{" "}
                 {log.detail}
+                <span className={styles.accent} style={{ marginLeft: "20px" }}>
+                  {new Date(log.updatedAt).toLocaleString("en-IN")}
+                </span>{" "}
               </li>
             ))
           ) : (
