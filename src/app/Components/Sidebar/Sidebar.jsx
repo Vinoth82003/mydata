@@ -10,6 +10,7 @@ import {
   ListTodo,
   Shield,
   DatabaseBackup,
+  ActivityIcon,
 } from "lucide-react";
 
 export default function Sidebar({
@@ -38,6 +39,7 @@ export default function Sidebar({
     { label: "Project Manager", icon: <DatabaseBackup /> },
     { label: "Calendar", icon: <CalendarDays /> },
     { label: "Todo", icon: <ListTodo /> },
+    { label: "Activities", icon: <ActivityIcon /> },
     // { label: "Notes", icon: <NotebookText /> },
     // { label: "Settings", icon: <Settings /> },
   ];
@@ -55,7 +57,7 @@ export default function Sidebar({
           <div
             className={styles.userInitials}
             style={{
-              backgroundColor: getInitialsColor(user.email || user.fname),
+              backgroundColor: getInitialsColor(user?.email || user?.fname),
             }}
           >
             {initials}

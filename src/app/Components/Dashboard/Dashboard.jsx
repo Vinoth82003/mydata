@@ -12,6 +12,7 @@ import ProjectManager from "../ProjectManager/ProjectManager";
 import DashboardHome from "../DashboardHome/DashboardHome";
 import AdvancedCalendar from "../AdvancedCalendar/AdvancedCalendar";
 import TodoList from "../TodoList/TodoList";
+import ActivityFeed from "../ActivityFeed/ActivityFeed";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -162,6 +163,9 @@ export default function Dashboard() {
         {activeMenu === "Notes" && <h2>Your Notes,</h2>}
         {activeMenu === "Todo" && (
           <TodoList redirectToLogin={redirectToLogin} />
+        )}
+        {activeMenu === "Activities" && (
+          <ActivityFeed/>
         )}
         {activeMenu === "Settings" && <p>Settings coming soon!</p>}
       </main>
