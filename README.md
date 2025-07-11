@@ -12,17 +12,17 @@ It features secure user authentication, customizable project management tools, a
 
 ## 📑 Table of Contents
 
-- [About](#about)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Available Scripts](#available-scripts)
-- [Environment Variables](#environment-variables)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [Changelog](#changelog)
-- [License](#license)
-- [Contact](#contact)
+- [About](#-about)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Available Scripts](#-available-scripts)
+- [Environment Variables](#-environment-variables)
+- [Screenshots](#-screenshots)
+- [Contributing](#-contributing)
+- [Changelog](#-changelog)
+- [License](#-license)
+- [Contact](#-contact)
 
 ---
 
