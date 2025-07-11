@@ -71,23 +71,27 @@ npm run dev
 ```
 
 ### 🚀 Production
+
 ```bash
 npm run build
 npm start
 ```
+
 ---
 
 ### 🧪 Available Scripts (from package.json)
-|Script	|Description|
-|---|------|
-|dev	|Start dev server with turbopack|
-|build	|Build the project|
-|start	|Start production server|
-|lint	|Run ESLint on source files|
+
+| Script | Description                     |
+| ------ | ------------------------------- |
+| dev    | Start dev server with turbopack |
+| build  | Build the project               |
+| start  | Start production server         |
+| lint   | Run ESLint on source files      |
 
 ---
 
 ### 🔐 Environment Variables
+
 Create a `.env.local` file in your root with the following keys:
 
 ```bash
@@ -102,11 +106,13 @@ ACCESS_SECRET=access_token_secret
 REFRESH_SECRET=refresh_token_secret
 ENCRYPTION_KEY=32_char_encryption_key
 ```
+
 🔒 All secrets are encrypted at rest. Never commit this file.
 
 ---
 
 ## 🤝 Contributing
+
 Contributions are welcome!
 
 - Fork the repo
@@ -122,20 +128,28 @@ Contributions are welcome!
 ---
 
 ## 📜 Changelog
-Version	Changes
-`0.1.0`	Initial release with projects, auth, password manager, calendar
+
+Version Changes
+`0.1.0` Initial release with projects, auth, password manager, calendar
 
 ---
 
 ## 📄 License
+
 This project is licensed under the MIT License.
 See the LICENSE file for full details.
 
 ---
 
-### 📬 Contact
-Vinoth S
-📧 vinothg0618@gmail.com
-🌐 GitHub Profile
+## 📬 Contact
+
+Have questions, suggestions, or want to connect?
+
+- 📧 Email: [vinothg0618@gmail.com](mailto:vinothg0618@gmail.com)
+- 🐙 GitHub: [github.com/vinoth82003](https://github.com/vinoth82003)
+- 💼 LinkedIn: [linkedin.com/in/vinoth82003](https://linkedin.com/in/vinoth82003)
+- 🌐 Portfolio: [vinoths.vercel.app](https://vinoths.vercel.app)
+
+> _Feel free to reach out for collaboration, feedback, or freelance opportunities!_
 
 > Built with ❤️ by Vinoth S using the latest web stack technologies in 2025.
