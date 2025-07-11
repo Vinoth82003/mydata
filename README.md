@@ -27,6 +27,10 @@ It features secure user authentication, customizable project management tools, a
 
 ---
 
+## 🌐 Demo
+[live](https://mydata-xi.vercel.app/)
+
+
 ## ✨ Features
 
 - 🧩 **Project Management** – Add/edit/delete projects with .env grouping
@@ -59,8 +63,8 @@ It features secure user authentication, customizable project management tools, a
 ### 📦 Installation
 
 ```bash
-git clone https://github.com/Vinoth82003/mydata-manager.git
-cd mydata-manager
+git clone https://github.com/Vinoth82003/mydata.git
+cd mydata
 npm install
 ```
 
