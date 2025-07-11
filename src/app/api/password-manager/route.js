@@ -19,8 +19,8 @@ export async function GET(req) {
     const userId = await getUserId(req);
     await connectDB();
     const entries = await PasswordEntry.find({ userId })
+    .sort({ createdAt: -1 })
       .lean()
-      .sort({ createdAt: -1 });
     ;
     const decrypted = entries.map((e) => ({
       ...e,

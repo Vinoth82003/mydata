@@ -20,8 +20,8 @@ export async function GET(req) {
     await connectDB();
 
     const projects = await Project.find({ userId })
+    .sort({ createdAt: -1 })
       .lean()
-      .sort({ createdAt: -1 });
     ;
 
     const decrypted = projects.map((proj) => ({
