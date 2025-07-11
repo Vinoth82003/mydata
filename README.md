@@ -3,11 +3,6 @@
 A full-stack project management and password manager application built with **Next.js**, **React**, and **MongoDB**.  
 It features secure user authentication, customizable project management tools, a powerful calendar, and an encrypted password vault.
 
-![Version](https://img.shields.io/github/package-json/v/Vinoth82003/mydata-manager)
-![License](https://img.shields.io/github/license/Vinoth82003/mydata-manager)
-![Stars](https://img.shields.io/github/stars/Vinoth82003/mydata-manager?style=social)
-![Issues](https://img.shields.io/github/issues/Vinoth82003/mydata-manager)
-
 ---
 
 ## 📑 Table of Contents
@@ -80,6 +75,7 @@ npm run dev
 npm run build
 npm start
 ```
+---
 
 ### 🧪 Available Scripts (from package.json)
 |Script	|Description|
@@ -88,6 +84,8 @@ npm start
 |build	|Build the project|
 |start	|Start production server|
 |lint	|Run ESLint on source files|
+
+---
 
 ### 🔐 Environment Variables
 Create a `.env.local` file in your root with the following keys:
@@ -106,7 +104,9 @@ ENCRYPTION_KEY=32_char_encryption_key
 ```
 🔒 All secrets are encrypted at rest. Never commit this file.
 
-### 🤝 Contributing
+---
+
+## 🤝 Contributing
 Contributions are welcome!
 
 - Fork the repo
@@ -119,13 +119,19 @@ Contributions are welcome!
 
 - Submit a pull request
 
-### 📜 Changelog
+---
+
+## 📜 Changelog
 Version	Changes
 `0.1.0`	Initial release with projects, auth, password manager, calendar
 
-### 📄 License
+---
+
+## 📄 License
 This project is licensed under the MIT License.
 See the LICENSE file for full details.
+
+---
 
 ### 📬 Contact
 Vinoth S
