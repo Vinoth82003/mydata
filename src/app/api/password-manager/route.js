@@ -18,7 +18,10 @@ export async function GET(req) {
   try {
     const userId = await getUserId(req);
     await connectDB();
-    const entries = await PasswordEntry.find({ userId }).lean();
+    const entries = await PasswordEntry.find({ userId })
+      .lean()
+      .sort({ createdAt: -1 });
+    ;
     const decrypted = entries.map((e) => ({
       ...e,
       password: decrypt(e.password),

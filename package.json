@@ -1,5 +1,5 @@
 {
-  "name": "mydata",
+  "name": "mydata-manager",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -35,5 +35,17 @@
     "sweetalert2": "^11.22.1",
     "timeago.js": "^4.0.2",
     "uuid": "^11.1.0"
-  }
+  },
+  "keywords": [
+    "nextjs",
+    "react",
+    "fullstack",
+    "mern",
+    "dashboard",
+    "project-management",
+    "password-manager"
+  ],
+  "author": "Vinoth S",
+  "license": "MIT",
+  "description": "A full-stack project management and password manager application built with Next.js, React, and MongoDB. It features user authentication, project management tools, and a secure password manager."
 }

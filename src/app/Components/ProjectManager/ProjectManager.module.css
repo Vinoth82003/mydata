@@ -160,7 +160,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: .7rem;
   font-size: 0.85rem;
   color: var(--text-secondary);
 }
@@ -430,6 +430,12 @@
 
 .emptyState svg {
   stroke: var(--text-secondary, #999);
+}
+
+.icon{
+  min-width: 30px;
+  height: 17px;
+  align-self: baseline;
 }
 
 @keyframes fadeIn {

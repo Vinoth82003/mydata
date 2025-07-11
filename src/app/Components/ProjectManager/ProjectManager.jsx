@@ -140,7 +140,7 @@ export default function ProjectManager({ redirectToLogin }) {
 
   return (
     <div className={styles.container}>
-      <h2 style={{marginBottom:"20px"}}>Your Project Data</h2>
+      <h2 style={{ marginBottom: "20px" }}>Your Project Data</h2>
       {/* Top Bar */}
       <div className={styles.topBar}>
         <input
@@ -190,27 +190,31 @@ export default function ProjectManager({ redirectToLogin }) {
 
               <p className={styles.description}>{project.description}</p>
 
-              <div className={styles.metaRow}>
-                <Layers size={16} className={styles.icon} />
-                <div className={styles.techStack}>
-                  {project.techStack.map((tech, i) => (
-                    <span key={i} className={styles.techChip}>
-                      {tech}
-                    </span>
-                  ))}
+              {project?.techStack && project?.techStack.length > 0 && (
+                <div className={styles.metaRow}>
+                  <Layers size={16} className={styles.icon} />
+                  <div className={styles.techStack}>
+                    {project.techStack.map((tech, i) => (
+                      <span key={i} className={styles.techChip}>
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className={styles.metaRow}>
-                <Tag size={16} className={styles.icon} />
-                <div className={styles.tagGroup}>
-                  {project.tags.map((tag, i) => (
-                    <span key={i} className={styles.tag}>
-                      #{tag}
-                    </span>
-                  ))}
+              {project?.tags && project?.tags.length > 0 && (
+                <div className={styles.metaRow}>
+                  <Tag size={16} className={styles.icon} />
+                  <div className={styles.tagGroup}>
+                    {project.tags.map((tag, i) => (
+                      <span key={i} className={styles.tag}>
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className={styles.linksRow}>
                 <GlobeIcon size={16} className={styles.icon} />
