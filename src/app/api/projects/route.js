@@ -20,10 +20,8 @@ export async function GET(req) {
     await connectDB();
 
     const projects = await Project.find({ userId })
-    .sort({ createdAt: -1 })
-      .lean()
-    ;
-
+      .sort({ createdAt: -1 })
+      .lean();
     const decrypted = projects.map((proj) => ({
       ...proj,
       envGroups:
@@ -85,7 +83,7 @@ export async function POST(req) {
         projectId: project._id,
       }
     );
-    
+
     return NextResponse.json({ success: true, data: decrypted });
   } catch (e) {
     return NextResponse.json(
@@ -125,7 +123,6 @@ export async function PATCH(req) {
         );
       }
     }
-    
 
     const updated = await Project.findByIdAndUpdate(id, updates, { new: true });
 
@@ -140,7 +137,6 @@ export async function PATCH(req) {
       })),
     };
 
-
     await logActivity(
       userId,
       "project_updated",
@@ -149,7 +145,7 @@ export async function PATCH(req) {
         projectId: updated._id,
       }
     );
-    
+
     return NextResponse.json({ success: true, data: decrypted });
   } catch (e) {
     return NextResponse.json(
@@ -171,7 +167,6 @@ export async function DELETE(req) {
 
     await Project.findByIdAndDelete(id);
 
-    
     await logActivity(
       userId,
       "project_deleted",
