@@ -18,7 +18,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Home");
 
   const redirectToLogin = () => {
@@ -149,13 +149,11 @@ export default function Dashboard() {
         )}
         {activeMenu === "Project Manager" && (
           <>
-            <h2>Your Project Data,</h2>
             <ProjectManager redirectToLogin={redirectToLogin} />
           </>
         )}
         {activeMenu === "Password Manager" && (
           <>
-            <h2>Your Data,</h2>
             <PasswordManager redirectToLogin={redirectToLogin} />
           </>
         )}
@@ -168,6 +166,7 @@ export default function Dashboard() {
           <ActivityFeed/>
         )}
         {activeMenu === "Settings" && <p>Settings coming soon!</p>}
+        <div className={styles.foot}></div>
       </main>
     </div>
   );

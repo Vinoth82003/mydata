@@ -133,26 +133,67 @@
   overflow-y: auto;
 }
 
+.sidebar.closed .userName {
+  display: none;
+}
+
+.foot{
+  margin-top: 200px;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .dashboardContainer {
     flex-direction: column;
   }
 
-  .sidebar {
-    position: absolute;
-    z-index: 1000;
-    height: 100dvh;
+  .userImage {
+    margin-bottom: 0rem;
+    /* margin-top: 2rem; */
   }
 
+  .logoSection {
+    margin-bottom: 0;
+  }
+
+  .menuToggle {
+    margin-bottom: 0;
+  }
+
+  .sidebar,
   .sidebar.closed {
-    width: 70px;
+    position: absolute;
+    z-index: 1000;
+    width: 100dvw;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    top: 0px;
   }
 
   .menu {
-    /* flex-direction: row; */
+    position: absolute;
     gap: 0.75rem;
     flex: 1;
+    top: 70px;
+    padding: 1rem;
+    left: 0;
+    width: 100dvw;
+    background: #00000059;
+    height: calc(100dvh - 70px);
+    backdrop-filter: blur(15px);
+  }
+
+  .sidebar.closed .menu {
+    width: 0;
+    padding: 0;
+    display: none;
+  }
+
+  .sidebar.closed .userName {
+    display: inline;
   }
 
   .tooltip {
@@ -164,9 +205,10 @@
   }
 
   .mainContent {
+    top: 70px;
     padding: 1rem;
-    width: calc(100vw - 80px);
+    width: calc(100vw - 0px);
     position: relative;
-    left: 70px;
+    left: 0px;
   }
 }

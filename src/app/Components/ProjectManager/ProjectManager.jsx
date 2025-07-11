@@ -140,6 +140,7 @@ export default function ProjectManager({ redirectToLogin }) {
 
   return (
     <div className={styles.container}>
+      <h2 style={{marginBottom:"20px"}}>Your Project Data</h2>
       {/* Top Bar */}
       <div className={styles.topBar}>
         <input

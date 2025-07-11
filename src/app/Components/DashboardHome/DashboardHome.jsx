@@ -183,7 +183,7 @@ export default function DashboardHome({ user, setActiveMenu }) {
                   {log.type.replace("_", " ")}
                 </span>{" "}
                 {log.detail}
-                <span className={styles.accent} style={{ marginLeft: "20px" }}>
+                <span className={styles.accent} style={{ marginLeft: "10px" }}>
                   {new Date(log.updatedAt).toLocaleString("en-IN")}
                 </span>{" "}
               </li>

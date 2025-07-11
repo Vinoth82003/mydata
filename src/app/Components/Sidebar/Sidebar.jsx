@@ -63,11 +63,11 @@ export default function Sidebar({
             {initials}
           </div>
         )}
-        {sidebarOpen && (
+        {
           <span className={styles.userName}>
             {user.fname} {user.lname}
           </span>
-        )}
+        }
       </div>
 
       <button
