@@ -19,9 +19,8 @@ export async function GET(req) {
     const userId = await getUserId(req);
     await connectDB();
     const entries = await PasswordEntry.find({ userId })
-    .sort({ createdAt: -1 })
-      .lean()
-    ;
+      .sort({ updatedAt: -1 })
+      .lean();
     const decrypted = entries.map((e) => ({
       ...e,
       password: decrypt(e.password),
@@ -74,7 +73,6 @@ export async function POST(req) {
   }
 }
 
-
 export async function PATCH(req) {
   try {
     const userId = await getUserId(req);
@@ -114,7 +112,6 @@ export async function PATCH(req) {
   }
 }
 
-
 export async function DELETE(req) {
   try {
     const userId = await getUserId(req);
@@ -133,7 +130,7 @@ export async function DELETE(req) {
         entryId: entry._id,
       }
     );
-    
+
     return NextResponse.json({ success: true, message: "Entry deleted" });
   } catch (e) {
     return NextResponse.json(
